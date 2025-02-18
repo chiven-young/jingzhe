@@ -1,6 +1,5 @@
 
 import Workspace from './workspace';
-import { getAccountInfo } from './tpt';
 
 export default class User {
 
@@ -19,18 +18,7 @@ export default class User {
         let user = Workspace.currentWorkspace?.user;
         let res = null;
         try {
-            res = await getAccountInfo();
-            if (res.success && res.data) {
-                user.uid = res.data?.serviceAccountId;
-                user.name = res.data?.name;
-                user.avatar = res.data?.avatar;
-                user.description = res.data?.description;
-                user.cover = res.data?.cover;
-                user.type = res.data?.type;
-                user.tags = res.data?.tags;
-                user.phone = res.data?.bindMobile;
-                user.email = res.data?.bindEmail;
-            }
+            
         } catch (e) {}
         Workspace.currentWorkspace.user = user;
         await Workspace.updateWorkspace(Workspace.currentWorkspace);

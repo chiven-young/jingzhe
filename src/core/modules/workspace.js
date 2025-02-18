@@ -1,6 +1,6 @@
 import { formatWorkspace, cellIndexs, cellRelationsIndexs, cellUserRelationsIndexs, getRandomColor } from '../config/db';
 import store from '@/store';
-import { getLocalStorageArray, reorderLocalStorageArray, removeFromLocalStorageArray } from '../utils';
+import { getLocalStorageArray, reorderLocalStorageArray, removeFromLocalStorageArray } from '../utils/data';
 import Files from './files';
 import { v4 as uuidv4 } from 'uuid';
 import bus from '@/core/utils/bus';

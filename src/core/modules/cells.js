@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import Workspace from './workspace';
 import { cellDataFormat } from '../utils/format';
-import { parseTimeToTimestamp } from '../utils/index';
+import { parseTimeToTimestamp } from '../utils/time';
 import { cellFieldsForCover, cellFieldsForTag, cellUserRelationTypes } from '../config/db';
 
 export default class Cells {
