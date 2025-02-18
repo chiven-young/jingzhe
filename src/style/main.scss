@@ -1,0 +1,227 @@
+:root {
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+
+  // color-scheme: light dark;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  // --el-bg-color-overlay: rgba(255,255,255, 0.7);
+  --el-bg-color-app: radial-gradient(47.8% 132.3% at 50% 44.31%, #EFEEF5 0%, #EFEEFA 63.64%, #F6F6F6 100%);
+  --el-bg-color-layout: rgba(255, 255, 255, 0.7);
+  --el-bg-color-panel: linear-gradient(65.75deg, #EFEEF5 21.04%, #EFEEFA 36.51%, #F6F6F6 91.47%);
+  --el-bg-color: #F2F2F5;
+  --el-bg-color-card: #FFFFFF;
+  --el-menu-item-font-size: 13px;
+  --el-menu-item-height: 42px;
+}
+
+html {
+  border-radius: 8px;
+  overflow: hidden;
+}
+body.tauri {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--el-border-color-lighter);
+  box-sizing: border-box;
+  // background-color: var(--el-bg-color-layout);
+  // #app {
+  //   box-shadow: var(--el-box-shadow-lighter);
+  // }
+}
+
+body {
+  margin: 0;
+  #app {
+    background: var(--el-bg-color-app);
+  }
+}
+
+h1 {
+  // font-size: 3.2em;
+  line-height: 1.1;
+}
+
+#app {
+  margin: 0;
+}
+
+/* 滚动条样式 */
+// ::-webkit-scrollbar {
+//   width: 4px;
+//   height: 4px;
+// }
+::-webkit-scrollbar-thumb {
+  background-color: var(--el-border-color);
+  border-radius: 6px;
+  width: 2px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent !important;
+}
+
+.el-overlay {
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+}
+
+.el-popover.el-popper {
+  border-radius: 8px;
+}
+
+.popper-container {
+  margin: 20px;
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  background: var(--el-bg-color-layout) !important;
+}
+
+.el-popover.el-popper.bubble-menu {
+  padding: 0;
+  width: fit-content !important;
+
+  .option-list {
+    padding: 8px 0;
+    box-sizing: border-box;
+
+    .item {
+      padding: 4px 8px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      &:hover {
+        background-color: var(--el-color-info-light-9);
+      }
+      &.active {
+        color: var(--el-color-primary);
+        background-color: var(--el-color-primary-light-9);
+      }
+
+      .icon {
+        font-size: 16px;
+        font-weight: bold;
+        width: 30px;
+        text-align: center;
+      }
+
+      .label {
+        font-size: 14px;
+      }
+    }
+  }
+}
+.background-blur {
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  background: var(--el-bg-color-layout) !important;
+}
+.z-card {
+  background-color: var(--el-bg-color-card);
+  border: 1px solid var(--el-border-color-lighter);
+  padding: 8px;
+  border-radius: 8px;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.z-card:hover {
+  box-shadow: var(--el-box-shadow-lighter);
+}
+
+/* ======== 按钮 ======== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 14px;
+  box-sizing: border-box;
+  border-radius: 6px;
+  border: 1px solid var(--el-border-color-light);
+  color: var(--el-text-color-regular);
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.btn:hover {
+  background-color: rgba(128, 128, 128, 0.14);
+}
+
+.btn.quaternary {
+  border-color: transparent;
+}
+
+.btn.quaternary:hover {
+  background-color: rgba(128, 128, 128, 0.14);
+}
+
+.btn.square {
+  padding: 4px;
+}
+
+.btn.small {
+  padding: 2px 6px;
+  font-size: 12px;
+}
+
+.btn.text {
+  border: none;
+}
+
+.btn-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  justify-content: space-between;
+}
+
+
+/* ======== 行为 ======== */
+
+// 拖动
+.draggable {
+  -webkit-app-region: drag;
+}
+
+// 不能被拖动
+.draggable-none {
+  -webkit-app-region: no-drag;
+}
+
+// 文本不能被选择
+.no-select {
+  -webkit-user-select: none;
+  /* Safari */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* IE/Edge */
+  user-select: none;
+  /* Standard syntax */
+}
+
+// 不能被点击
+.disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.pointer-events-none {
+  pointer-events: none;
+}

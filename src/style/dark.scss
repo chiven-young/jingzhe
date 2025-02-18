@@ -1,0 +1,9 @@
+html.dark {
+    /* 自定义深色背景颜色 */
+    // --el-bg-color: #212121;
+    // --el-bg-color-overlay: rgba(0, 0, 0, 0.6);
+    --el-bg-color-app: radial-gradient(52.34% 138.39% at 50% 0%, #2C2B33 0%, #2C2B33 51.78%, #282828 100%);
+    --el-bg-color-layout: rgba(0,0,0,0.6);
+    --el-bg-color: #2F2E33;
+    --el-bg-color-card: #222222;
+}

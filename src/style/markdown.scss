@@ -1,0 +1,190 @@
+.markdown-preview {
+  color: var(--text-color-2);
+  word-break: break-word;
+  font-size: 16px;
+
+  h1 {
+    color: #ff757f;
+    font-size: 32px;
+    font-weight: bolder;
+    line-height: 1.25;
+    margin: 0 0 10px 0;
+    padding-bottom: 0 !important;
+  }
+
+  h2 {
+    color: #e0af68;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1.25;
+    padding-bottom: 0 !important;
+    margin-top: 0;
+  }
+
+  h3 {
+    color: #9ece6a;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1.25;
+    margin-top: 0;
+  }
+
+  h4 {
+    color: #7dcfff;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.25;
+    margin-top: 0;
+  }
+
+  h5 {
+    color: #7aa2f7;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.25;
+    margin-top: 0;
+  }
+
+  h6 {
+    color: #bb9af7;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.25;
+    margin-top: 0;
+  }
+
+  h1::before,
+  h2::before,
+  h3::before,
+  h4::before,
+  h5::before,
+  h6::before {
+    float: left;
+    padding-right: 4px;
+    margin-left: -29px;
+    font-size: 14px;
+    font-weight: normal;
+    color: var(--text-color-4);
+  }
+
+  h1::before {
+    content: "H1";
+    transform: translateY(10px);
+  }
+
+  h2::before {
+    content: "H2";
+    transform: translateY(5px);
+  }
+
+  h3::before {
+    content: "H3";
+    transform: translateY(2px);
+  }
+
+  h4::before {
+    content: "H4";
+    transform: translateY(1px);
+  }
+
+  h5::before {
+    content: "H5";
+  }
+
+  h6::before {
+    content: "H6";
+  }
+
+  input[type=checkbox] {
+    border: 1px solid var(--border-color-1);
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 50%;
+    flex-shrink: 0;
+    padding: 0;
+    margin: 0;
+    margin-inline-end: 6px;
+    width: 18px;
+    height: 18px;
+    position: relative;
+    vertical-align: text-top;
+    transition: box-shadow 0.15s ease-in-out;
+  }
+
+  input[type=checkbox]:checked {
+    background-color: var(--q-primary);
+    border-color: var(--q-primary);
+    outline: 1px solid var(--q-primary);
+    outline-offset: 1px;
+  }
+
+  input[type=checkbox]:checked:after {
+    content: "";
+    top: -1px;
+    inset-inline-start: -1px;
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    display: block;
+    background-color: #ffffff;
+    mask-position: 52% 52%;
+    mask-size: 65%;
+    mask-repeat: no-repeat;
+    mask-image: url('data:image/svg+xml; utf8, <svg width="12px" height="10px" viewBox="0 0 12 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-4.000000, -6.000000)" fill="%23000000"><path d="M8.1043257,14.0367999 L4.52468714,10.5420499 C4.32525014,10.3497722 4.32525014,10.0368095 4.52468714,9.8424863 L5.24777413,9.1439454 C5.44721114,8.95166768 5.77142411,8.95166768 5.97086112,9.1439454 L8.46638057,11.5903727 L14.0291389,6.1442083 C14.2285759,5.95193057 14.5527889,5.95193057 14.7522259,6.1442083 L15.4753129,6.84377194 C15.6747499,7.03604967 15.6747499,7.35003511 15.4753129,7.54129009 L8.82741268,14.0367999 C8.62797568,14.2290777 8.3037627,14.2290777 8.1043257,14.0367999"></path></g></g></svg>');
+    -webkit-mask-position: 52% 52%;
+    -webkit-mask-size: 65%;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-image: url('data:image/svg+xml; utf8, <svg width="12px" height="10px" viewBox="0 0 12 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-4.000000, -6.000000)" fill="%23000000"><path d="M8.1043257,14.0367999 L4.52468714,10.5420499 C4.32525014,10.3497722 4.32525014,10.0368095 4.52468714,9.8424863 L5.24777413,9.1439454 C5.44721114,8.95166768 5.77142411,8.95166768 5.97086112,9.1439454 L8.46638057,11.5903727 L14.0291389,6.1442083 C14.2285759,5.95193057 14.5527889,5.95193057 14.7522259,6.1442083 L15.4753129,6.84377194 C15.6747499,7.03604967 15.6747499,7.35003511 15.4753129,7.54129009 L8.82741268,14.0367999 C8.62797568,14.2290777 8.3037627,14.2290777 8.1043257,14.0367999"></path></g></g></svg>');
+  }
+
+  ul {
+    padding-left: 0;
+  }
+
+  ul>li {
+    word-break: break-all;
+    margin-left: 20px;
+  }
+
+  ul>li:has(input[type="checkbox"]) {
+    list-style-type: none;
+    word-break: break-all;
+    margin-left: 0;
+  }
+
+  li+li {
+    margin-top: 4px;
+  }
+
+  li {
+    p {
+      margin-bottom: 0;
+    }
+  }
+
+  ol {
+    padding-left: 22px;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  pre {
+    font-family: unset;
+  }
+
+  hr {
+    margin: 12px 0;
+    display: inline-block;
+    width: 100%;
+  }
+
+  blockquote:last-child,
+  pre:last-child,
+  ul:last-child,
+  ol:last-child,
+  hr:last-child {
+    margin-bottom: 16px;
+  }
+}
