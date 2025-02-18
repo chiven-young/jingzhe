@@ -29,9 +29,8 @@
 import { onMounted, onBeforeUnmount, ref, watch } from 'vue';
 import NestedDraggable from "./nested.vue";
 import { Map, addDragable } from './map';
-import { Editor } from '../method';
 import store from '@/store';
-import Bus from "@/utils/bus";
+import Bus from "@/core/utils/bus";
 
 const props = defineProps({
     data: Object

@@ -52,7 +52,7 @@ import { Menu, ArrowDown, PriceTag } from '@element-plus/icons-vue';
 // import tagsView from '../tag-selector/tags-view.vue';
 import { Map } from './map';
 import store from '@/store';
-import Bus from "@/utils/bus";
+import Bus from "@/core/utils/bus";
 
 const props = defineProps({
     children: {

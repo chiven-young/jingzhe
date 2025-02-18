@@ -16,8 +16,8 @@
 </template>
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import bus from '@/utils/bus';
-import { copyText } from '@/utils/tools';
+import bus from '@/core/utils/bus';
+import { copyText } from '@/core/utils/tools';
 
 const baseStaticUrl = import.meta.env.VITE_STATIC_BASE_URL;
 

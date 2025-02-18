@@ -20,7 +20,7 @@
 </template>
 <script setup>
 import { ref, onMounted, reactive, onBeforeUnmount, onBeforeMount, watch } from 'vue';
-import bus from '@/utils/bus';
+import bus from '@/core/utils/bus';
 import zApi from '@/core';
 import store from '@/store';
 import { cellDataFormat } from '@/core/utils/format';
@@ -29,7 +29,7 @@ import OperationsBar from '@/editor/bar/operations.vue';
 import Panel from '@/editor/panel/index.vue';
 import Doc from '@/editor/document/index.vue';
 import { ElMessage } from 'element-plus';
-import { debounce } from '@/utils/tools';
+import { debounce } from '@/core/utils/tools';
 
 const router = useRouter();
 const route = useRoute();

@@ -133,7 +133,7 @@ import FileTree from '@/components/file-tree.vue';
 import { useRouter, useRoute } from 'vue-router';
 import zApi from '@/core';
 import store from '@/store';
-import bus from '@/utils/bus';
+import bus from '@/core/utils/bus';
 
 const props = defineProps({
     menuConfig: Object,

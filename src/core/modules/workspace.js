@@ -3,7 +3,7 @@ import store from '@/store';
 import { getLocalStorageArray, reorderLocalStorageArray, removeFromLocalStorageArray } from '../utils';
 import Files from './files';
 import { v4 as uuidv4 } from 'uuid';
-import bus from '@/utils/bus';
+import bus from '@/core/utils/bus';
 import PouchDB from 'pouchdb-browser';
 import PouchDBFind from 'pouchdb-find';
 PouchDB.plugin(PouchDBFind);

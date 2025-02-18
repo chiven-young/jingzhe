@@ -6,7 +6,7 @@
 <script setup>
 import { onMounted } from 'vue';
 import Wrapper from './wrapper.vue';
-import bus from '@/utils/bus';
+import bus from '@/core/utils/bus';
 
 const props = defineProps({
     type: {

@@ -13,9 +13,9 @@
     </div>
 </template>
 <script setup>
-import bus from '@/utils/bus';
+import bus from '@/core/utils/bus';
 import store from '@/store';
-import { debounce } from '@/utils/tools';
+import { debounce } from '@/core/utils/tools';
 
 const _saveItem = () => {
     bus.emit('saveItem')

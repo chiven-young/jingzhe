@@ -14,7 +14,7 @@
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';
-import bus from '@/utils/bus';
+import bus from '@/core/utils/bus';
 import zApi from '@/core';
 
 const showDialog = ref(false);

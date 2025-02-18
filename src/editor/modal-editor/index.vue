@@ -36,7 +36,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import Edit from './cell-edit.vue';
-import Bus from '@/utils/bus';
+import Bus from '@/core/utils/bus';
 import zApi from '@/core';
 import { ElMessage } from 'element-plus'
 

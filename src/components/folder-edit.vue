@@ -16,7 +16,7 @@
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';
-import bus from '@/utils/bus.js';
+import bus from '@/core/utils/bus';
 import zApi from '@/core';
 import store from '@/store';
 

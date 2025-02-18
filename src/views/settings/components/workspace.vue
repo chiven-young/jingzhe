@@ -37,7 +37,7 @@
 import { ref, onMounted, reactive } from 'vue'
 import store from '@/store';
 import zApi from '@/core';
-import bus from '@/utils/bus';
+import bus from '@/core/utils/bus';
 
 const emit = defineEmits(['close']);
 

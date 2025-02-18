@@ -14,7 +14,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import store from '@/store';
-import bus from '@/utils/bus.js';
+import bus from '@/core/utils/bus';
 
 const openSettings = () => {
     bus.emit('openSettings', 'account');

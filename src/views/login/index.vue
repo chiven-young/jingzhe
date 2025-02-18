@@ -91,7 +91,7 @@
 import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from "vue-router"
 import zApi from '@/core';
-import { checkEmail, checkPhone } from '@/utils/tools';
+import { checkEmail, checkPhone } from '@/core/utils/tools';
 import { ElMessage } from 'element-plus';
 const router = useRouter();
 

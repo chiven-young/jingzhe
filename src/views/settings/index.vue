@@ -38,7 +38,7 @@
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';
-import bus from '@/utils/bus.js';
+import bus from '@/core/utils/bus';
 import store from '@/store';
 import zApi from '@/core';
 import Account from './components/account.vue';

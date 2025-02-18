@@ -59,7 +59,7 @@
     </div>
 </template>
 <script setup>
-import bus from '@/utils/bus';
+import bus from '@/core/utils/bus';
 import { useRouter, useRoute } from 'vue-router';
 import zApi from '@/core';
 import store from '@/store';

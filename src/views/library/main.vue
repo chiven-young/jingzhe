@@ -45,7 +45,7 @@ import { fileTypeOptions } from '@/config/options';
 import { ElMessage } from 'element-plus'
 import store from '@/store';
 import zApi from '@/core';
-import bus from '@/utils/bus';
+import bus from '@/core/utils/bus';
 import { Waterfall } from "vue-waterfall-plugin-next";
 import 'vue-waterfall-plugin-next/dist/style.css';
 import { useRouter, useRoute } from "vue-router";

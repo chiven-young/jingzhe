@@ -42,7 +42,7 @@
 </template>
 <script setup>
 import { useRouter } from 'vue-router';
-import bus from '@/utils/bus';
+import bus from '@/core/utils/bus';
 import ImgTemplate1 from '@/assets/img/img-template-1.png';
 import ImgTemplate2 from '@/assets/img/img-template-2.png';
 

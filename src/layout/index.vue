@@ -31,7 +31,7 @@ import Share from '@/components/share.vue';
 import FolderEdit from '@/components/folder-edit.vue';
 import Template from '@/views/library/template.vue';
 import store from '@/store';
-import bus from '@/utils/bus';
+import bus from '@/core/utils/bus';
 import zApi from '@/core';
 
 onBeforeMount(() => {

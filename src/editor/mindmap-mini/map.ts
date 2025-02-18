@@ -1,8 +1,7 @@
 import { cellDataFormat } from '@/core/utils/format';
 import store from '@/store';
-import Bus from "@/utils/bus";
+import Bus from "@/core/utils/bus";
 import { v4 as uuidv4 } from 'uuid';
-import { Editor } from '../method/index';
 
 // 查询节点，可能是常规节点，也可能是自由节点
 const findNode = (data, cid, who) => {

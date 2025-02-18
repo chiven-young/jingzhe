@@ -1,9 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 import Workspace from './workspace';
-import { cellDataFormat, tptItem2cell } from '../utils/format';
+import { cellDataFormat } from '../utils/format';
 import { parseTimeToTimestamp } from '../utils/index';
 import { cellFieldsForCover, cellFieldsForTag, cellUserRelationTypes } from '../config/db';
-import { getContentItemDetails } from './tpt';
 
 export default class Cells {
 
@@ -286,13 +285,7 @@ export default class Cells {
     static async getCell(params) {
         const { cid, source } = params;
         try {
-            let res = null;
-            if (source && source === 'TPT') {
-                res = await getContentItemDetails(cid);
-                res = tptItem2cell(res?.data);
-            } else {
-                res = await Workspace.cellsDB.get(cid);
-            }
+            let res = await Workspace.cellsDB.get(cid);
             return {
                 code: '1000',
                 success: true,

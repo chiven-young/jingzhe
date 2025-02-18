@@ -60,10 +60,7 @@
 <script lang="ts" setup>
 import { ref, computed, reactive } from 'vue';
 import { ElMessage } from 'element-plus';
-import { Close, InfoFilled } from '@element-plus/icons-vue';
-// import Upload from '@/components/upload.vue';
 import emptyReports from '@/assets/images/empty-reports.png';
-import { isItaipingDomain } from '@/utils/tools';
 import zApi from '@/core';
 import { getUnsplashList } from '@/core/modules/unsplash';
 

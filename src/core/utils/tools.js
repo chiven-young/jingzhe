@@ -148,21 +148,6 @@ export function replaceRichTextContent(richText, newText) {
   return result;
 }
 
-// 检查是不是属于太平的资产：域名以itaiping.com结尾
-export function isItaipingDomain(url) {
-  if (!url) {
-    return false;
-  }
-  let strArr = url.split('/');
-  if (strArr.length >= 3) {
-    let domain = strArr[2];
-    var suffix = '.itaiping.com';
-    return domain.endsWith(suffix);
-  } else {
-    return false
-  }
-}
-
 //防抖
 // fn 要执行的函数
 // delay 执行函数

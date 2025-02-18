@@ -38,7 +38,7 @@ import type {
     NodeDropType,
 } from 'element-plus/es/components/tree/src/tree.type'
 import { useRouter, useRoute } from 'vue-router';
-import bus from '@/utils/bus';
+import bus from '@/core/utils/bus';
 import store from '@/store';
 
 const treeRef: any = ref(null);

@@ -58,7 +58,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import moment from 'moment';
-import { copyText } from '@/utils/tools';
+import { copyText } from '@/core/utils/tools';
 
 const baseStaticUrl = import.meta.env.VITE_STATIC_BASE_URL;
 
