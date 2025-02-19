@@ -6,6 +6,27 @@ import { cellFieldsForCover, cellFieldsForTag, cellUserRelationTypes } from '../
 
 export default class Cells {
 
+    // 保存细胞树
+    static async updateCellsTree(tree) {
+        if (!Array.isArray(tree)) {
+            return {
+                code: '1004',
+                success: false,
+                data: null,
+                message: '细胞树必须是数组'
+            };
+        } else {
+            Workspace.currentWorkspace.data.cellsTree = tree;
+            await Workspace.updateWorkspace(Workspace.currentWorkspace);
+            return {
+                code: '1000',
+                success: true,
+                data: true,
+                message: '保存细胞树成功'
+            }
+        }
+    }
+
     /**
      * 获取用户的所有根细胞列表
      * @param {Number} uid - 用户id，如果传此值表示只看这个用户的细胞列表（需权限或只看公开），uid和token至少有一个

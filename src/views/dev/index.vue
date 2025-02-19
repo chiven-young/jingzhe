@@ -10,13 +10,6 @@
             <div>本地配置版本: {{ workspace?.version || '无' }}</div>
             <div>{{ zApi.env.isTauri ? '当前环境: Tauri' : '当前环境: 浏览器' }}</div>
             <br />
-            <!-- <div class="item">
-                <div class="label">模式快捷切换</div>
-                <el-radio-group v-model="workspace.config.model" @change="onModelChange">
-                    <el-radio label="normal" size="large">普通模式</el-radio>
-                    <el-radio label="advanced" size="large">高级模式</el-radio>
-                </el-radio-group>
-            </div> -->
             <div class="item">
                 <div class="label">菜单</div>
                 <el-checkbox-group v-model="selectMenus" @change="onMenuChange">

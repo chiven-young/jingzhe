@@ -2,8 +2,8 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/platform",
-    name: "Platform",
+    path: "/",
+    name: "Root",
     component: () => import("../layout/index.vue"),
     meta: { title: "雨水", requireAuth: true },
     children: [

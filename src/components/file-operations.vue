@@ -7,9 +7,6 @@
         <!-- <span class="btn square text" @click="shareItem">
             <Icon icon="ShareOutlined" size="20" />
         </span> -->
-        <span class="btn square text" @click="bus.emit('previewItem')">
-            <Icon icon="RemoveRedEyeOutlined" size="20" />
-        </span>
     </div>
 </template>
 <script setup>
@@ -22,9 +19,6 @@ const _saveItem = () => {
 }
 const saveItem = debounce(_saveItem, 300);
 
-const shareItem = () => {
-    bus.emit('share-item-start')
-}
 </script>
 <style lang="scss" scoped>
 .file-operations {

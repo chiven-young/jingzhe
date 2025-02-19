@@ -21,6 +21,62 @@
   --el-menu-item-height: 42px;
 }
 
+html.light {
+  --bg-app-color: #F7F7F7;
+  --bg-page-color: #f3f3f3;
+  --bg-content-color: #ffffff;
+  --bg-section-color: #F7F7F7;
+  --bg-item-color: rgba(128, 128, 128, 0.12);
+  --bg-hover-color: rgba(128, 128, 128, 0.08);
+  --bg-translucent-color-1: rgba(255, 255, 255, 0.8);
+  --bg-translucent-color-2: rgba(255, 255, 255, 0.6);
+  --bg-translucent-color-3: rgba(255, 255, 255, 0.4);
+
+  --text-color-1: #000000;
+  --text-color-2: #353535;
+  --text-color-3: #808080;
+  --text-color-4: #B2B2B2;
+
+  --border-color-1: rgba(60, 60, 60, .29);
+  --border-color-2: rgba(60, 60, 60, .12);
+  --border-color-3: rgba(60, 60, 60, .06);
+  --border-color-4: rgba(255, 255, 255, .7);
+
+  --box-shadow-1: 0 12px 48px 0 rgba(6, 10, 38, .15);
+  --box-shadow-2: 0 6px 24px 0 rgba(6, 10, 38, .1);
+  --box-shadow-3: 0 6px 18px 0 rgba(6, 10, 38, .04);
+}
+
+.electron.body--light {
+  --bg-app-color: rgba(255, 255, 255, 0.72);
+}
+
+html.dark {
+  --bg-app-color: #191919;
+  --bg-page-color: #111111;
+  --bg-content-color: #1E1E1E;
+  --bg-section-color: #252525;
+  --bg-item-color: rgba(128, 128, 128, 0.12);
+  --bg-hover-color: rgba(128, 128, 128, 0.1);
+  --bg-translucent-color-1: rgba(0, 0, 0, 0.8);
+  --bg-translucent-color-2: rgba(0, 0, 0, 0.6);
+  --bg-translucent-color-3: rgba(0, 0, 0, 0.4);
+
+  --text-color-1: #ffffff;
+  --text-color-2: #D2D2D2;
+  --text-color-3: #8E8E8E;
+  --text-color-4: #626262;
+
+  --border-color-1: rgba(84, 84, 84, .65);
+  --border-color-2: rgba(84, 84, 84, .48);
+  --border-color-3: rgba(84, 84, 84, .34);
+  --border-color-4: rgba(255, 255, 255, .1);
+
+  --box-shadow-1: unset;
+  --box-shadow-2: 0 6px 24px 0 rgba(6, 10, 38, .1);
+  --box-shadow-3: 0 2px 18px 0 rgba(6, 10, 28, .2);
+}
+
 html {
   border-radius: 8px;
   overflow: hidden;

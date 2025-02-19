@@ -17,7 +17,6 @@
             </div>
         </div>
         <Settings />
-        <Share />
         <FolderEdit />
         <Template />
     </div>
@@ -27,7 +26,6 @@ import { ref, onMounted, onBeforeMount } from 'vue';
 import Header from './header.vue';
 import Menu from './menu.vue';
 import Settings from '@/views/settings/index.vue';
-import Share from '@/components/share.vue';
 import FolderEdit from '@/components/folder-edit.vue';
 import Template from '@/views/library/template.vue';
 import store from '@/store';

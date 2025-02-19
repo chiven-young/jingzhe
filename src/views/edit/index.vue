@@ -101,7 +101,7 @@ const saveItem = async () => {
         })
     }
 }
-const save = debounce(saveItem, 1000);
+const save = debounce(saveItem, 500);
 
 // 更新路由参数
 const changeQuery = (cid, type) => {

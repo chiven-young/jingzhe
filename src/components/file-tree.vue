@@ -181,7 +181,7 @@ const handleDrop = (
     dropType: NodeDropType,
     ev: DragEvents
 ) => {
-    // console.log('tree drop:', draggingNode.data, dropNode.data, dropType)
+    console.log('tree drop:', draggingNode.data, dropNode.data, dropType)
     if (dropType === 'before' || dropType === 'after') {
         const meRes = findNodeById({
             cid: '0',
@@ -258,7 +258,7 @@ const handleDrop = (
 }
 // 判断什么才能成为拖动目标
 const canDrop = (draggingNode: Node, dropNode: Node, type: NodeDropType) => {
-    if (dropNode.data.type !== 'folder') return false
+    if (dropNode.data.type !== 'folder' && type === 'inner') return false
     return true
 }
 // 根据id查询节点及其父级

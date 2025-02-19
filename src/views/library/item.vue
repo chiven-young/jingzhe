@@ -40,7 +40,6 @@
                     <el-dropdown-item v-if="data.status > 0" command="edit">编辑</el-dropdown-item>
                     <el-dropdown-item v-if="data.groupName !== 'TEMPLATE' && data.type !== 'folder' && data.status > 0" command="star">{{ isStar ? '取消收藏' : '收藏' }}</el-dropdown-item>
                     <el-dropdown-item v-if="data.groupName !== 'TEMPLATE' && data.status > 0 && data.type !== 'folder'" command="template">保存为模板</el-dropdown-item>
-                    <el-dropdown-item v-if="data.groupName !== 'TEMPLATE' && data.status > 0 && data.type !== 'folder'" command="open" :disabled="data.status === 4">发布</el-dropdown-item>
                     <el-dropdown-item v-if="data.status === 4" command="copyOpenLink">复制发布链接</el-dropdown-item>
                     <el-dropdown-item v-if="data.status === 0" command="restore">恢复</el-dropdown-item>
                     <template v-else>

@@ -54,8 +54,10 @@ export default class Config {
     static setTheme(theme) {
         if (theme === 'dark') {
             document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
         } else {
             document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
         }
         if (theme !== Workspace.currentWorkspace.appearance.theme) {
             Workspace.currentWorkspace.appearance.theme = theme;
@@ -115,8 +117,10 @@ export default class Config {
         User.getUserData();
         if (Workspace.currentWorkspace?.appearance?.theme  === 'dark') {
             document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
         } else {
             document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
         }
     }
 }

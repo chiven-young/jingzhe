@@ -49,7 +49,9 @@ export const formatWorkspace = (workspace) => {
     data.editor.panel.collapse = workspace?.editor?.panel?.collapse === false ? false : true;
 
     data.config = (workspace?.config && typeof workspace.config === 'object') ? workspace.config : {};
-    data.config.mode = workspace?.config?.mode || 'normal';
+
+    data.data = (workspace?.data && typeof workspace.data === 'object') ? workspace.data : {};
+    data.data.cellsTree = Array.isArray(workspace?.data?.cellsTree) ? workspace.data.cellsTree : [];
 
     return data;
 }
