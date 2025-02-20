@@ -2,21 +2,14 @@
     <div class="menu no-select">
         <WorkspaceBar />
         <div class="items">
-            <!-- <div class="tabs">
+            <div class="tabs">
                 <div v-for="item in menuBarTabs" :key="item?.value" :title="item?.label"
                     :class="{ tab: true, active: activeTab?.value === item?.value }" @click="changeTab(item)">
                     <Icon :icon="item?.icon" size="16" />
                 </div>
-            </div> -->
+            </div>
             <div v-show="activeTab?.value === 'item'" class="menu-content menu-list">
-                <!-- <div :class="{ item: true, active: activeMenuItem === '/library/index' }" @click="changeMenuItem('/library/index')">
-                    <Icon v-if="activeMenuItem === '/library/index'" icon="LibraryBooksFilled" size="16" />
-                    <Icon v-else icon="LibraryBooksOutlined" size="16" />
-                    <div class="name">
-                        <span>我的文档</span>
-                    </div>
-                </div> -->
-                <div :class="{ item: true, active: activeMenuItem === '/' }"
+                <div :class="['item', { active: activeMenuItem === '/' }]"
                     @click="changeMenuItem('/')">
                     <Icon v-if="activeMenuItem === '/library/index'" icon="AssistantPhotoFilled" size="16" />
                     <Icon v-else icon="AssistantPhotoOutlined" size="16" />
@@ -24,7 +17,7 @@
                         <span>开始</span>
                     </div>
                 </div>
-                <div v-if="menuConfig?.stars" :class="{ item: true, active: activeMenuItem === '/library/star' }"
+                <div :class="['item', { active: activeMenuItem === '/library/star' }]"
                     @click="changeMenuItem('/library/star')">
                     <Icon v-if="activeMenuItem === '/library/star'" icon="StarOutlined" size="16" />
                     <Icon v-else icon="StarOutlineRound" size="16" />
@@ -32,7 +25,7 @@
                         <span>收藏</span>
                     </div>
                 </div>
-                <div v-if="menuConfig?.material" :class="{ item: true, active: activeMenuItem === '/library/material' }"
+                <div :class="['item', { active: activeMenuItem === '/library/material' }]"
                     @click="changeMenuItem('/library/material')">
                     <Icon v-if="activeMenuItem === '/library/material'" icon="InboxFilled" size="16" />
                     <Icon v-else icon="InboxOutlined" size="16" />
@@ -40,7 +33,7 @@
                         <span>素材库</span>
                     </div>
                 </div>
-                <!-- <div v-if="menuConfig?.tags" :class="{ item: true, active: activeMenuItem === '/library/tags' }" @click="changeMenuItem('/library/tags')">
+                <div :class="['item', { active: activeMenuItem === '/library/tags' }]" @click="changeMenuItem('/library/tags')">
                     <Icon v-if="activeMenuItem === '/library/tags'" icon="DiscountRound" size="16" />
                     <Icon v-else icon="DiscountOutlined" size="16" />
                     <div class="name">
@@ -50,9 +43,8 @@
                             <Icon icon="ArrowDropDownRound" size="16" @click="state.showTagsTree = !state.showTagsTree" />
                         </div>
                     </div>
-                </div> -->
-                <div v-if="menuConfig?.myTemplates"
-                    :class="{ item: true, active: activeMenuItem === '/library/template' }"
+                </div>
+                <div :class="['item', { active: activeMenuItem === '/library/template' }]"
                     @click="changeMenuItem('/library/template')">
                     <Icon v-if="activeMenuItem === '/library/template'" icon="SubtitlesFilled" size="16" />
                     <Icon v-else icon="SubtitlesOutlined" size="16" />
@@ -60,14 +52,14 @@
                         <span>我的模板</span>
                     </div>
                 </div>
-                <!-- <div :class="{ item: true, active: activeMenuItem === '/test' }" @click="changeMenuItem('/test')">
+                <!-- <div :class="['item', { active: activeMenuItem === '/test' }]" @click="changeMenuItem('/test')">
                     <Icon v-if="activeMenuItem === '/dev/0'" icon="AdminPanelSettingsRound" size="16" />
                     <Icon v-else icon="AdminPanelSettingsOutlined" size="16" />
                     <div class="name">
                         <span>Test</span>
                     </div>
                 </div> -->
-                <div :class="{ item: true, active: activeMenuItem === '/library/index' }"
+                <div :class="['item', { active: activeMenuItem === '/library/index' }]"
                     @click="changeMenuItem('/library/index')">
                     <Icon v-if="activeMenuItem === '/library/index'" icon="LayersFilled" size="16" />
                     <Icon v-else icon="LayersOutlined" size="16" />
@@ -81,24 +73,6 @@
                     </div>
                 </div>
                 <FileTree v-show="state.showFilesTree" />
-                <!-- <div v-for="item in itemMenu" :key="item?.value" :title="item?.label"
-                    :class="{ item: true, active: activeMenuItem === item?.value }" @click="changeMenuItem(item.value)">
-                    <Icon v-if="activeMenuItem === item?.value" :icon="item?.highlightIcon" size="16" />
-                    <Icon v-else :icon="item?.icon" size="16" />
-                    <span>{{ item?.label }}</span>
-                </div> -->
-                <!-- <el-collapse v-model="activeCollapseNames" @change="handleCollapseChange">
-                    <el-collapse-item v-if="userData?.role === 'ADMIN' || userData?.role === 'SUPER_ADMIN'" title="后台管理"
-                        name="1">
-                        <div v-for="item in adminMenu" :key="item?.value" :title="item?.label"
-                            :class="{ item: true, active: activeMenuItem?.value === item?.value }"
-                            @click="changeMenuItem(item)">
-                            <Icon v-if="activeMenuItem?.value === item?.value" :icon="item?.highlightIcon" size="16" />
-                            <Icon v-else :icon="item?.icon" size="16" />
-                            <span>{{ item?.label }}</span>
-                        </div>
-                    </el-collapse-item>
-                </el-collapse> -->
             </div>
         </div>
         <div class="footer">
@@ -170,27 +144,12 @@ const addItem = (type) => {
 const userData = ref({});
 
 const activeCollapseNames = ref(['1']);
-const handleCollapseChange = (val) => {
-    sessionStorage.setItem('zhiz_active_collapse_names', JSON.stringify(val));
-}
-const restoreCollapseNames = () => {
-    let val = ['1'];
-    try {
-        val = JSON.parse(sessionStorage.getItem('zhiz_active_collapse_names'));
-    } catch (e) {
-        console.log(e);
-    }
-    if (val) {
-        activeCollapseNames.value = val;
-    }
-}
 
 onMounted(async () => {
     // 获取当前路由
     const route = useRoute();
     // 获取当前路由的菜单项
     activeMenuItem.value = route.path;
-    // restoreCollapseNames();
 })
 
 </script>

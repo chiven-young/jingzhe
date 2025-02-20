@@ -3,21 +3,19 @@ import bus from '@/core/utils/bus';
 import store from '@/store';
 
 export default class Library {
-    static tree = []; // 目录树
-    static breadcrumb = []; // 面包屑
 
     // 获取目录树
     static async getTree () {
         let list = JSON.parse(sessionStorage.getItem('fileTreeData') || '[]');
         if (list.length) {
-            this.tree = list;
+            store.state.cellsTree = list;
             return list;
         }
         list = await this.getList('0');
-        this.tree = sortByChildrenSort(list, zApi.workspace?.currentWorkspace?.data?.rootCells);
-        sessionStorage.setItem('fileTreeData', JSON.stringify(this.tree));
-        store.state.cellsTree = this.tree;
-        return this.tree;
+        list = sortByChildrenSort(list, zApi.workspace?.currentWorkspace?.data?.rootCells);
+        sessionStorage.setItem('fileTreeData', JSON.stringify(list));
+        store.state.cellsTree = list;
+        return list;
     }
     // 获取细胞列表
     static async getList (parentId) {
@@ -41,7 +39,7 @@ export default class Library {
         let list = res?.data?.list || [];
         const resNode = findNodeById({
             cid: '0',
-            correlationsChildren: this.tree,
+            correlationsChildren: store.state.cellsTree,
         }, parentId);
         const parent = resNode?.node;
         if (parent) {
@@ -107,7 +105,7 @@ export default class Library {
     // 更新父文件夹的childrenSort
     static async updateFolderChildrenSort (parentId, newChildren) {
         if (parentId === '0') {
-            const list = this.tree.map((item) => {
+            const list = store.state.cellsTree.map((item) => {
                 return item?.cid;
             })
             await zApi.cells.saveRootCells(list);
@@ -136,7 +134,6 @@ export default class Library {
                 childrenSort: childrenSort,
             }
         })
-        this.tree = store.state.cellsTree;
     }
 }
 

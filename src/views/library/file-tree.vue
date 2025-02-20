@@ -48,12 +48,12 @@ const getFilesTree = async (params) => {
         // 如果有cid，则表示针对这个节点更新
         const resNode = findNodeById({
             cid: '0',
-            correlationsChildren: Library.tree,
+            correlationsChildren: store.state.cellsTree,
         }, params.cid);
         if (resNode?.node) {
             resNode.node.name = params.name ? params.name : resNode.node.name;
         }
-        sessionStorage.setItem('fileTreeData', JSON.stringify(Library.tree));
+        sessionStorage.setItem('fileTreeData', JSON.stringify(store.state.cellsTree));
         return
     }
     store.state.cellsTree = await Library.getTree();
@@ -63,15 +63,14 @@ const getFilesTree = async (params) => {
             treeRef.value.setCurrentKey(cid, true);
         }, 100);
     }
-    // Library.tree = store.state.workspace?.data?.cellsTree || [];
-    // console.log('filesTree', Library.tree)
+    // console.log('filesTree', store.state.cellsTree)
 }
 
 const route = useRoute();
 const router = useRouter();
 const clickNode = (data: any) => {
     if (!data.cid) return
-    const breadcrumb = Library.findBreadcrumb(Library.tree, data.cid);
+    const breadcrumb = Library.findBreadcrumb(store.state.cellsTree, data.cid);
     store.state.breadcrumbs = breadcrumb;
     console.log('clickNode', data, store.state.breadcrumbs)
     if (data.type === 'folder') {
@@ -113,7 +112,7 @@ let lastTree = [];
 
 const handleDragStart = (node: Node, ev: DragEvents) => {
     console.log('drag start', node)
-    lastTree = JSON.parse(JSON.stringify(Library.tree));
+    lastTree = JSON.parse(JSON.stringify(store.state.cellsTree));
 }
 const handleDragEnter = (
     draggingNode: Node,
@@ -165,7 +164,7 @@ const handleDrop = async (
         if (meParent?.cid === itParent?.cid) {
             // 同一节点下，不做绑定，只调整顺序
             await updateFolderChildrenSort(meParent.cid);
-            sessionStorage.setItem('fileTreeData', JSON.stringify(Library.tree));
+            sessionStorage.setItem('fileTreeData', JSON.stringify(store.state.cellsTree));
             return
         }
         if (itParent?.cid === draggingNode.data.cid) return // 不能拖拽到子节点
@@ -192,7 +191,7 @@ const handleDrop = async (
         // bus.emit('cells-changed', null);
         // console.log('解除原关联', res, parent)
     }
-    sessionStorage.setItem('fileTreeData', JSON.stringify(Library.tree));
+    sessionStorage.setItem('fileTreeData', JSON.stringify(store.state.cellsTree));
 }
 // 判断什么才能成为拖动目标
 const canDrop = (draggingNode: Node, dropNode: Node, type: NodeDropType) => {
@@ -311,12 +310,12 @@ const handleMenuCommand = async (command) => {
         const newCell = newCellRes.data;
         const nodeRes = findNodeById({
             cid: '0',
-            correlationsChildren: Library.tree,
+            correlationsChildren: store.state.cellsTree,
         }, contextMenuState.node?.cid);
         if (nodeRes?.node) {
             nodeRes.node.correlationsChildren.push(newCell);
         }
-        sessionStorage.setItem('fileTreeData', JSON.stringify(Library.tree));
+        sessionStorage.setItem('fileTreeData', JSON.stringify(store.state.cellsTree));
         // 聚焦此节点
         setTimeout(() => {
             treeRef.value.setCurrentKey(cid);
@@ -329,14 +328,14 @@ const handleMenuCommand = async (command) => {
         if (res.success) {
             const nodeRes = findNodeById({
                 cid: '0',
-                correlationsChildren: Library.tree,
+                correlationsChildren: store.state.cellsTree,
             }, contextMenuState.node?.cid);
             const parent = nodeRes?.parent;
             const index = parent.correlationsChildren.findIndex(item => item.cid === contextMenuState.node?.cid);
             if (index > -1) {
-                parent.correlationsChildren.splice(index, 1);
+                nodeRes.parent.correlationsChildren.splice(index, 1);
             }
-            sessionStorage.setItem('fileTreeData', JSON.stringify(Library.tree));
+            sessionStorage.setItem('fileTreeData', JSON.stringify(store.state.cellsTree));
             bus.emit('cells-changed', { cid: contextMenuState.node?.cid, remove: true });
         }
     }
@@ -356,8 +355,8 @@ const onNodeExpand = async (data: any) => {
     }
     sessionStorage.setItem('fileTreeExpandedKeys', JSON.stringify(expandedKeys.value));
     data.correlationsChildren = await Library.getList(data.cid);
-    // console.log('展开', data, Library.tree)
-    sessionStorage.setItem('fileTreeData', JSON.stringify(Library.tree));
+    // console.log('展开', data, store.state.cellsTree)
+    sessionStorage.setItem('fileTreeData', JSON.stringify(store.state.cellsTree));
 }
 // 节点收起
 const onNodeCollapse = (data: any) => {
