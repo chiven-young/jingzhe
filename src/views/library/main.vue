@@ -90,7 +90,6 @@ const paramsCells = reactive({
     maxStatus: 4,
     minStatus: 2,
     status: '', // 专门针对后端使用
-    onlyLocal: true, // 是否只使用本地数据（有些数据后端是不存在的）
     isDelete: 0, // 专门针对后端使用
     type: '',
     parentIds: [],
@@ -155,18 +154,15 @@ const getLibraryData = ()=> {
     paramsCells.isRoot = 1;
     paramsCells.parentIds = [];
     paramsCells.relationshipType = '';
-    paramsCells.onlyLocal = true;
     paramsCells.page = 1;
     if (props.libraryParams?.page == 'deleted') {
         paramsCells.groupName = '';
-        paramsCells.onlyLocal = false;
         paramsCells.minStatus = 0;
         paramsCells.maxStatus = 0;
         paramsCells.isDelete = 1;
         paramsCells.isRoot = null;
     } else if (props.libraryParams?.page == 'index') {
         paramsCells.minStatus = 2;
-        paramsCells.onlyLocal = false;
     } else if (props.libraryParams?.page == 'star') {
         paramsCells.groupName = '';
         paramsCells.relationshipType = 'star';
@@ -177,7 +173,6 @@ const getLibraryData = ()=> {
         paramsCells.groupName = 'TEMPLATE';
         paramsCells.status = 0; // 后端没有做模板，标记为0表示不使用后端数据
     } else if (props.libraryParams?.page == 'material') {
-        paramsCells.onlyLocal = false;
         paramsCells.groupName = 'MATERIAL';
         paramsCells.status = 'material';
     } else if (props.libraryParams?.page == 'tags') {

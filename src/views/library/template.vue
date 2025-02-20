@@ -26,7 +26,6 @@ const getList = async () => {
         minStatus: 1,
         maxStatus: 4,
         isRoot: null,
-        onlyLocal: true,
     });
     list.value = res.data?.list || [];
 }

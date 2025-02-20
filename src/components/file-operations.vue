@@ -1,9 +1,9 @@
 <template>
     <div class="file-operations">
         <div class="save-status">{{ store.state.itemSaveStatus === 'saving' ? '正在保存...' : store.state.itemSaveStatus === 'saved' ? '已保存' : '有改动未保存' }}</div>
-        <span class="btn square text" @click="saveItem">
+        <!-- <span class="btn square text" @click="saveItem">
             <Icon icon="SaveOutlined" size="20" />
-        </span>
+        </span> -->
         <!-- <span class="btn square text" @click="shareItem">
             <Icon icon="ShareOutlined" size="20" />
         </span> -->

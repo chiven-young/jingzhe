@@ -1,12 +1,12 @@
 <template>
     <div class="file-tree">
-        <el-tree ref="treeRef" :data="filesTree" :expand-on-click-node="false" draggable node-key="cid" :props="defaultProps"
+        <el-tree ref="treeRef" :data="store.state.cellsTree" :expand-on-click-node="false" draggable node-key="cid" :props="defaultProps"
             highlight-current :default-expanded-keys="expandedKeys" :current-node-key="route.query?.cid" @node-drag-start="handleDragStart"
             @node-drag-enter="handleDragEnter" @node-drag-leave="handleDragLeave" @node-drag-over="handleDragOver"
             @node-drag-end="handleDragEnd" @node-drop="handleDrop" :allow-drop="canDrop" @node-click="clickNode"
             @node-contextmenu="showContextMenu" @node-expand="onNodeExpand" @node-collapse="onNodeCollapse">
             <template #default="{ node, data }">
-                <span class="tree-node">
+                <span :class="['tree-node', { 'empty': !data?.cid }]">
                     <Icon v-if="data.type === 'folder'" class="icon" icon="FolderOpenRound" size="14" />
                     <Icon v-else-if="data.type === 'document'" class="icon" icon="FeedOutlined" size="14" />
                     <Icon v-else-if="data.type === 'mindmap'" class="icon" icon="SchemaOutlined" size="14" />
@@ -40,54 +40,40 @@ import type {
 import { useRouter, useRoute } from 'vue-router';
 import bus from '@/core/utils/bus';
 import store from '@/store';
+import Library from './library';
 
 const treeRef: any = ref(null);
-const filesTree = ref([]); // 文件树
-const getFilesTree = async () => {
-    filesTree.value = await getList('0');
+const getFilesTree = async (params) => {
+    if (params?.cid) {
+        // 如果有cid，则表示针对这个节点更新
+        const resNode = findNodeById({
+            cid: '0',
+            correlationsChildren: Library.tree,
+        }, params.cid);
+        if (resNode?.node) {
+            resNode.node.name = params.name ? params.name : resNode.node.name;
+        }
+        sessionStorage.setItem('fileTreeData', JSON.stringify(Library.tree));
+        return
+    }
+    store.state.cellsTree = await Library.getTree();
     const cid = route.query?.cid;
     if (cid) {
         setTimeout(() => {
             treeRef.value.setCurrentKey(cid, true);
         }, 100);
     }
-    // console.log('filesTree', filesTree.value)
+    // Library.tree = store.state.workspace?.data?.cellsTree || [];
+    // console.log('filesTree', Library.tree)
 }
-
-// 获取文件列表
-const getList = async (parentId: string) => {
-    let res: any = null;
-    let params: any = {
-        groupName: 'CONTENT',
-        maxStatus: 4,
-        minStatus: 1,
-        isRoot: 1,
-        showCorrelationChildren: 1,
-        onlyLocal: true,
-        page: 1,
-        pageSize: -1,
-    }
-    if (parentId && parentId !== '0') {
-        params.parentIds = [parentId];
-        params.isRoot = null;
-    }
-    try {
-        res = await zApi.cells.getCells(params)
-    } catch (error) { };
-    let list = res?.data?.list || [];
-    return list;
-}
-const updateTreeById = (cid: string) => {
-
-} 
 
 const route = useRoute();
 const router = useRouter();
 const clickNode = (data: any) => {
-    const breadcrumb = findBreadcrumb(filesTree.value, data.cid);
+    if (!data.cid) return
+    const breadcrumb = Library.findBreadcrumb(Library.tree, data.cid);
     store.state.breadcrumbs = breadcrumb;
     console.log('clickNode', data, store.state.breadcrumbs)
-    if (!data.cid) return
     if (data.type === 'folder') {
         if (route.path !== '/library') {
             const breadcrumbs = store.state.breadcrumbs.map((item: any) => item.cid);
@@ -105,25 +91,6 @@ const clickNode = (data: any) => {
     }
 }
 
-// 根据cid获取当前细胞的面包屑
-function findBreadcrumb(data, targetCid) {
-  function helper(arr, path) {
-    for (const item of arr) {
-      const newPath = [...path, { cid: item.cid, name: item.name }];
-      if (item.cid === targetCid) {
-        return newPath;
-      }
-      if (item.correlationsChildren && item.correlationsChildren.length > 0) {
-        const result = helper(item.correlationsChildren, newPath);
-        if (result) {
-          return result;
-        }
-      }
-    }
-    return null;
-  }
-  return helper(data, []);
-}
 // 监听面包屑变化，更新当前节点
 watch(() => store.state.breadcrumbs, (newVal: any) => {
     // console.log('watch', newVal)
@@ -146,7 +113,7 @@ let lastTree = [];
 
 const handleDragStart = (node: Node, ev: DragEvents) => {
     console.log('drag start', node)
-    lastTree = JSON.parse(JSON.stringify(filesTree.value));
+    lastTree = JSON.parse(JSON.stringify(Library.tree));
 }
 const handleDragEnter = (
     draggingNode: Node,
@@ -175,7 +142,7 @@ const handleDragEnd = (
 }
 
 // 当拖动结束时
-const handleDrop = (
+const handleDrop = async (
     draggingNode: Node,
     dropNode: Node,
     dropType: NodeDropType,
@@ -195,66 +162,37 @@ const handleDrop = (
         const itParent = itRes?.parent;
         // console.log('我的节点', draggingNode.data.name, '目标节点', dropNode.data.name)
         // console.log('我的父级', meParent, '目标父级', itParent)
-        if (meParent?.cid === itParent?.cid) return // 同一节点下
+        if (meParent?.cid === itParent?.cid) {
+            // 同一节点下，不做绑定，只调整顺序
+            await updateFolderChildrenSort(meParent.cid);
+            sessionStorage.setItem('fileTreeData', JSON.stringify(Library.tree));
+            return
+        }
         if (itParent?.cid === draggingNode.data.cid) return // 不能拖拽到子节点
         // if (itParent?.type !== 'folder') return // 必须文绑定到文件夹下面
-        if (itParent?.cid === '0') {
-            // 如果是回到根目录，则接触我之前的关联，回到根目录
-            zApi.cells.disconnectCells({
-                sourceId: meParent?.cid,
-                targetId: draggingNode.data.cid,
-            })
-            zApi.cells.updateCell({
-                cid: draggingNode.data.cid,
-                isRoot: 1
-            })
-            // console.log('回到根目录')
-        } else if (itParent?.cid) {
-            // 如果不是回到根目录，则移动到目标节点的同级
-            zApi.cells.connectCells({
-                sourceId: itParent.cid,
-                targetId: draggingNode.data.cid,
-            })
-            // console.log('绑定父级', itParent.name)
-            if (meParent?.cid === '0') {
-                // 如果我曾经是顶级，则去除跟根标记
-                zApi.cells.updateCell({
-                    cid: draggingNode.data.cid,
-                    isRoot: 0
-                })
-                // console.log('去除根级标记')
-            } else {
-                zApi.cells.disconnectCells({
-                    sourceId: meParent?.cid,
-                    targetId: draggingNode.data.cid,
-                })
-                // console.log('解除原关系')
-            }
-        }
-        bus.emit('cells-changed', null);
+        const meParentId = meParent?.cid === '0' ? null : meParent?.cid;
+        const itParentId = itParent?.cid === '0' ? null : itParent?.cid;
+        zApi.cells.moveCell(draggingNode.data.cid, meParentId, itParentId);
+        await updateFolderChildrenSort(meParentId);
+        await updateFolderChildrenSort(itParentId);
+        // bus.emit('cells-changed', null);
     } else if (dropType === 'inner') {
         if (dropNode.data.type !== 'folder') return
-        // 建立新关联
-        zApi.cells.connectCells({
-            sourceId: dropNode.data.cid,
-            targetId: draggingNode.data.cid,
-        })
-        // console.log('建立新关联', dropNode.data?.name, draggingNode.data?.name)
         // 解除原关联
         const res = findNodeById({
             cid: '0',
             correlationsChildren: lastTree,
         }, draggingNode.data.cid);
         const parent = res?.parent;
-        if (parent?.cid) {
-            zApi.cells.disconnectCells({
-                sourceId: parent.cid,
-                targetId: draggingNode.data.cid,
-            })
-        }
-        bus.emit('cells-changed', null);
+        const meParentId = parent?.cid === '0' ? null : parent?.cid;
+        const itParentId = dropNode.data.cid;
+        await zApi.cells.moveCell(draggingNode.data.cid, meParentId, itParentId);
+        await updateFolderChildrenSort(meParentId);
+        await updateFolderChildrenSort(itParentId);
+        // bus.emit('cells-changed', null);
         // console.log('解除原关联', res, parent)
     }
+    sessionStorage.setItem('fileTreeData', JSON.stringify(Library.tree));
 }
 // 判断什么才能成为拖动目标
 const canDrop = (draggingNode: Node, dropNode: Node, type: NodeDropType) => {
@@ -283,6 +221,11 @@ const findNodeById = (obj, id) => {
     }
     return null;
 };
+// 更新父文件夹的childrenSort
+const updateFolderChildrenSort = async (parentId) => {
+    const newParent = treeRef.value.getNode(parentId);
+    await Library.updateFolderChildrenSort(parentId, newParent?.data?.correlationsChildren);
+}
 
 // 节点右键
 const contextMenuState: any = reactive({
@@ -292,6 +235,7 @@ const contextMenuState: any = reactive({
     node: null,
 })
 const showContextMenu = (event, data, node) => {
+    if (!data?.cid) return
     event.preventDefault(); // 禁用浏览器默认右键菜单
     contextMenuState.show = true;
     contextMenuState.top = event.clientY;
@@ -367,11 +311,12 @@ const handleMenuCommand = async (command) => {
         const newCell = newCellRes.data;
         const nodeRes = findNodeById({
             cid: '0',
-            correlationsChildren: filesTree.value,
+            correlationsChildren: Library.tree,
         }, contextMenuState.node?.cid);
         if (nodeRes?.node) {
             nodeRes.node.correlationsChildren.push(newCell);
         }
+        sessionStorage.setItem('fileTreeData', JSON.stringify(Library.tree));
         // 聚焦此节点
         setTimeout(() => {
             treeRef.value.setCurrentKey(cid);
@@ -384,13 +329,14 @@ const handleMenuCommand = async (command) => {
         if (res.success) {
             const nodeRes = findNodeById({
                 cid: '0',
-                correlationsChildren: filesTree.value,
+                correlationsChildren: Library.tree,
             }, contextMenuState.node?.cid);
             const parent = nodeRes?.parent;
             const index = parent.correlationsChildren.findIndex(item => item.cid === contextMenuState.node?.cid);
             if (index > -1) {
                 parent.correlationsChildren.splice(index, 1);
             }
+            sessionStorage.setItem('fileTreeData', JSON.stringify(Library.tree));
             bus.emit('cells-changed', { cid: contextMenuState.node?.cid, remove: true });
         }
     }
@@ -404,16 +350,18 @@ const closeContextMenu = () => {
 
 // 节点展开
 const onNodeExpand = async (data: any) => {
-    console.log('展开', data)
+    // console.log('展开', data)
     if (!expandedKeys.value.includes(data.cid)) {
         expandedKeys.value.push(data.cid);
     }
     sessionStorage.setItem('fileTreeExpandedKeys', JSON.stringify(expandedKeys.value));
-    data.correlationsChildren = await getList(data.cid);
+    data.correlationsChildren = await Library.getList(data.cid);
+    // console.log('展开', data, Library.tree)
+    sessionStorage.setItem('fileTreeData', JSON.stringify(Library.tree));
 }
 // 节点收起
 const onNodeCollapse = (data: any) => {
-    console.log('收起', data)
+    // console.log('收起', data)
     const index = expandedKeys.value.indexOf(data.cid);
     if (index > -1) {
         expandedKeys.value.splice(index, 1);
@@ -423,7 +371,7 @@ const onNodeCollapse = (data: any) => {
 
 onMounted(() => {
     expandedKeys.value = JSON.parse(sessionStorage.getItem('fileTreeExpandedKeys') || '[]');
-    getFilesTree();
+    getFilesTree(null);
     bus.on('cells-changed', getFilesTree);
     bus.on('workspace-switched', getFilesTree);
 })
@@ -471,6 +419,9 @@ onUnmounted(() => {
 
 .tree-node:hover .more-btn {
     display: inline-flex;
+}
+.tree-node.empty {
+    color: var(--el-text-color-disabled);
 }
 
 .context-menu {

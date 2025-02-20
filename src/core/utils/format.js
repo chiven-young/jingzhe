@@ -75,10 +75,7 @@ export const cellDataFormat = (cell) => {
     
     // 配置项
     data.config = (typeof cell?.config === "object" && cell?.config !== null) ? cell.config : {};
-    data.config.shareStatus = cell?.config?.shareStatus === 0 ? 0 : 1; // 是否允许分享
-    data.config.likeStatus = cell?.config?.likeStatus === 0 ? 0 : 1; // 是否允许点赞
-    data.config.commentStatus = cell?.config?.commentStatus === 0 ? 0 : 1; // 是否允许评论
-    data.config.price = cell?.config?.price || 0; // 价格
+    data.childrenSort = Array.isArray(cell?.childrenSort) ? cell.childrenSort : []; // 子级细胞排序
 
     data.statistics = (typeof cell?.statistics === "object" && cell?.statistics !== null) ? cell.statistics : {};
     data.statistics.viewCount = cell?.statistics?.viewCount || 0; // 阅读数

@@ -51,7 +51,7 @@ export const formatWorkspace = (workspace) => {
     data.config = (workspace?.config && typeof workspace.config === 'object') ? workspace.config : {};
 
     data.data = (workspace?.data && typeof workspace.data === 'object') ? workspace.data : {};
-    data.data.cellsTree = Array.isArray(workspace?.data?.cellsTree) ? workspace.data.cellsTree : [];
+    data.data.rootCells = Array.isArray(workspace?.data?.rootCells) ? workspace.data.rootCells : [];
 
     return data;
 }

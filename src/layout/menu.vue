@@ -129,7 +129,7 @@
 import { ref, onMounted, reactive } from 'vue';
 import { menuBarTabs, itemMenu } from '@/config/options';
 import WorkspaceBar from '../components/workspace-bar.vue';
-import FileTree from '@/components/file-tree.vue';
+import FileTree from '@/views/library/file-tree.vue';
 import { useRouter, useRoute } from 'vue-router';
 import zApi from '@/core';
 import store from '@/store';

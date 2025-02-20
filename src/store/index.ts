@@ -21,6 +21,7 @@ const store = createStore({
     },
     workspace: null,
     loadingWorkspace: false,
+    cellsTree: [],
     breadcrumbs: [],
     itemSaveStatus: 'saved',
 

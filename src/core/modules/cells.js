@@ -6,27 +6,6 @@ import { cellFieldsForCover, cellFieldsForTag, cellUserRelationTypes } from '../
 
 export default class Cells {
 
-    // 保存细胞树
-    static async updateCellsTree(tree) {
-        if (!Array.isArray(tree)) {
-            return {
-                code: '1004',
-                success: false,
-                data: null,
-                message: '细胞树必须是数组'
-            };
-        } else {
-            Workspace.currentWorkspace.data.cellsTree = tree;
-            await Workspace.updateWorkspace(Workspace.currentWorkspace);
-            return {
-                code: '1000',
-                success: true,
-                data: true,
-                message: '保存细胞树成功'
-            }
-        }
-    }
-
     /**
      * 获取用户的所有根细胞列表
      * @param {Number} uid - 用户id，如果传此值表示只看这个用户的细胞列表（需权限或只看公开），uid和token至少有一个
@@ -614,6 +593,55 @@ export default class Cells {
             }
         }
     }
+
+    // 移动细胞（从一个细胞下面移动到另一个细胞下面）
+    static async moveCell(cid, sourceId, targetId) {
+        if (!cid) {
+            return {
+                code: '1005',
+                success: false,
+                data: false,
+                message: 'cid不存在'
+            };
+        }
+        if (sourceId) {
+            await this.disconnectCells({
+                sourceId: sourceId,
+                targetId: cid,
+            })
+        } else {
+            await this.updateCell({
+                cid: cid,
+                isRoot: 0
+            })
+            const list = Workspace.currentWorkspace.data.rootCells;
+            const index = list.indexOf(cid);
+            if (index > -1) {
+                list.splice(index, 1);
+                await this.saveRootCells(list);
+            }
+        }
+        if (targetId) {
+            await this.connectCells({
+                sourceId: targetId,
+                targetId: cid,
+            })
+        } else {
+            await this.updateCell({
+                cid: cid,
+                isRoot: 1
+            })
+            const list = Workspace.currentWorkspace.data.rootCells;
+            list.push(cid);
+            await this.saveRootCells(list);
+        }
+        return {
+            code: '1000',
+            success: true,
+            data: true,
+            message: '细胞移动成功'
+        };
+    }
     
     // 关联一个细胞与用户
     static async connectCellAndUser (params) {
@@ -749,6 +777,27 @@ export default class Cells {
             };
         });
         Workspace.cellsRelationsDB.bulkDocs(docsToDelete);
+    }
+
+    // 保存细胞树
+    static async saveRootCells(list) {
+        if (!Array.isArray(list)) {
+            return {
+                code: '1004',
+                success: false,
+                data: null,
+                message: '必须是数组'
+            };
+        } else {
+            Workspace.currentWorkspace.data.rootCells = list;
+            await Workspace.updateWorkspace(Workspace.currentWorkspace);
+            return {
+                code: '1000',
+                success: true,
+                data: true,
+                message: '保存成功'
+            }
+        }
     }
     
 }
