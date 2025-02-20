@@ -14,18 +14,7 @@
                 </span>
             </template>
         </el-tree>
-        <div class="context-menu" v-if="contextMenuState.show"
-            :style="{ top: `${contextMenuState.top}px`, left: `${contextMenuState.left}px` }">
-            <div class="menu-item" @click="handleMenuCommand('edit')">编辑</div>
-            <!-- <div class="menu-item" v-if="!contextMenuState.node?.isStar" @click="handleMenuCommand('star')">收藏</div>
-            <div class="menu-item" v-else @click="handleMenuCommand('unStar')">取消收藏</div> -->
-            <template v-if="contextMenuState.node?.type === 'folder'">
-                <div class="menu-item" @click="handleMenuCommand('document')">新建图文</div>
-                <div class="menu-item" @click="handleMenuCommand('mindmap')">新建思维导图</div>
-                <div class="menu-item" @click="handleMenuCommand('folder')">新建文件夹</div>
-            </template>
-            <div class="menu-item" @click="handleMenuCommand('delete')">删除</div>
-        </div>
+        <contextMenu v-if="contextMenuState.show" :state="contextMenuState" @command="handleMenuCommand" />
     </div>
 </template>
 <script lang="ts" setup>
@@ -41,6 +30,7 @@ import { useRouter, useRoute } from 'vue-router';
 import bus from '@/core/utils/bus';
 import store from '@/store';
 import Library from './library';
+import contextMenu from './item-context-menu.vue';
 
 const treeRef: any = ref(null);
 const getFilesTree = async (params) => {

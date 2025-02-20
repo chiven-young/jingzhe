@@ -10,16 +10,7 @@
         </div>
         <div class="filter"></div>
         <div ref="listRef" class="item-list" :class="[ showType ]">
-            <template v-if="showType === 'waterfall'">
-                <Waterfall :list="cellsList" backgroundColor="transparent" :gutter="16" :hasAroundGutter="false" :breakpoints="breakpoints" align="left" :delay="300" :animationDelay="100" :posDuration="100" :animationDuration="100">
-                    <template #default="{ item, index }">
-                        <Item class="item" :data="item" :key="index" :showType="showType" v-model:isStar="item.isStar" @toggleStar="toggleStar" @changeStatus="changeCellStatus" @remove="removeCell" @saveAsTemplate="saveAsTemplate" @connect="onConnectCells" @action="onCellAction" />
-                    </template>
-                </Waterfall>
-            </template>
-            <template v-else>
-                <Item v-for="(item, index) in cellsList" :key="index" class="item" :data="item" :showType="showType" v-model:isStar="item.isStar" @toggleStar="toggleStar" @changeStatus="changeCellStatus" @remove="removeCell" @saveAsTemplate="saveAsTemplate" @connect="onConnectCells" @action="onCellAction" />
-            </template>
+            <Item v-for="(item, index) in cellsList" :key="index" class="item" :data="item" :showType="showType" v-model:isStar="item.isStar" @toggleStar="toggleStar" @changeStatus="changeCellStatus" @remove="removeCell" @saveAsTemplate="saveAsTemplate" @connect="onConnectCells" @action="onCellAction" @showContextMenu="showContextMenu" />
             <!-- <div v-if="libraryParams?.page !== 'deleted'" class="new-btn" @click="router.push({ path: '/edit' })">
                 <div class="blank">
                     <Icon class="icon" icon="AddRound" size="28" />
@@ -36,6 +27,7 @@
             <el-input v-model="pageData.jumperPage" controls-position="right" size="small" />
             <el-button size="small" @click="refreshList(pageData.jumperPage)">跳转</el-button>
         </div> -->
+        <contextMenu v-if="contextMenuState.show" :state="contextMenuState" @command="handleMenuCommand" />
     </div>
 </template>
 <script setup>
@@ -46,8 +38,7 @@ import { ElMessage } from 'element-plus'
 import store from '@/store';
 import zApi from '@/core';
 import bus from '@/core/utils/bus';
-import { Waterfall } from "vue-waterfall-plugin-next";
-import 'vue-waterfall-plugin-next/dist/style.css';
+import contextMenu from './item-context-menu.vue';
 import { useRouter, useRoute } from "vue-router";
 
 const props = defineProps({
@@ -327,6 +318,35 @@ const onCellAction = async (cell, action) => {
         }
     }
 }
+
+
+// 节点右键
+const contextMenuState = reactive({
+    show: false,
+    top: 0,
+    left: 0,
+    node: null,
+})
+const showContextMenu = (event, data) => {
+    if (!data?.cid) return
+    event.preventDefault(); // 禁用浏览器默认右键菜单
+    contextMenuState.show = true;
+    contextMenuState.top = event.clientY;
+    contextMenuState.left = event.clientX;
+    contextMenuState.node = data;
+    // console.log('右键', event, data, node, contextMenuState)
+    // 点击页面其他地方关闭菜单
+    document.addEventListener('click', closeContextMenu);
+}
+// 关闭右键菜单
+const closeContextMenu = () => {
+    contextMenuState.show = false;
+    document.removeEventListener('click', closeContextMenu);
+}
+const handleMenuCommand = (command) => {
+    console.log('command', command)
+}
+
 
 watch(() => props.libraryParams, (newValue, oldValue) => {
     console.log('library change======', props.libraryParams?.page)

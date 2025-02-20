@@ -1,6 +1,6 @@
 <template>
     <div class="cell-item" :class="[ showType, { 'hover': isHover } ]" :data-id="data?.cid" ref="cellItemRef">
-        <div class="z-card wrapper" draggable="true" @dragstart="onDragStart">
+        <div class="z-card wrapper" draggable="true" @dragstart="onDragStart" @contextmenu.prevent="showContextMenu">
             <div v-if="data.type === 'folder'" class="info">
                 <div class="preview-cover" @click="goToPage(data)">
                     <div class="preview-content">
@@ -55,7 +55,7 @@
     </div>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, reactive } from 'vue';
 import moment from 'moment';
 import { copyText } from '@/core/utils/tools';
 
@@ -66,10 +66,14 @@ const props = defineProps({
     isStar: Boolean, // 是否已被收藏
     showType: String, // 显示类型（卡片、网格）
 })
-const emit = defineEmits(['changeStatus', 'update:isStar', 'toggleStar', 'saveAsTemplate', 'action', 'connect']);
+const emit = defineEmits(['changeStatus', 'update:isStar', 'toggleStar', 'saveAsTemplate', 'action', 'connect', 'showContextMenu']);
 
 const cellItemRef = ref(null);
 const isHover = ref(false);
+
+const showContextMenu = (event) => {
+    emit('showContextMenu', event, props.data);
+}
 
 const handleCommand = (command) => {
     if (command === 'edit') {
@@ -139,6 +143,7 @@ onMounted( async () => {
 </script>
 <style lang="scss" scoped>
 .cell-item {
+    position: relative;
 
     .wrapper {
         overflow: hidden;
@@ -196,7 +201,7 @@ onMounted( async () => {
             color: var(--el-text-color-primary);
             flex-grow: 1;
             .title {
-                font-size: 16px;
+                font-size: 14px;
                 font-weight: 700;
                 display: flex;
                 align-items: center;
@@ -239,7 +244,7 @@ onMounted( async () => {
                 text-align: center;
                 color: var(--el-text-color-primary);
                 .title {
-                    font-size: 16px;
+                    font-size: 14px;
                     font-weight: 700;
                     overflow: hidden;
                     text-overflow: ellipsis;

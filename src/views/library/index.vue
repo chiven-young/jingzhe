@@ -27,16 +27,11 @@ import zApi from '@/core';
 const route = useRoute();
 const router = useRouter();
 
-const showType = ref('waterfall');
+const showType = ref('grid');
 const changeShowType = (val) => {
     showType.value = val;
 }
 const showTypeOptions = [
-    {
-        label: '瀑布',
-        value: 'waterfall',
-        icon: 'DashboardOutlined'
-    },
     {
         label: '网格',
         value: 'grid',
