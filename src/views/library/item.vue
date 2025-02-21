@@ -94,7 +94,7 @@ const handleCommand = (command) => {
     } else if (command === 'open') {
         emit('changeStatus', props.data?.cid, 4)
     } else if (command === 'copyOpenLink') {
-        let url = `${baseStaticUrl}/apps/rainwater/#/post?cid=${props.data?.cid}`;
+        let url = `${baseStaticUrl}/apps/jingzhe/#/post?cid=${props.data?.cid}`;
         copyText(url);
     } else if (command === 'remove') {
         emit('remove', props.data?.cid)

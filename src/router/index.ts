@@ -5,7 +5,7 @@ const routes: Array<RouteRecordRaw> = [
     path: "/",
     name: "Root",
     component: () => import("../layout/index.vue"),
-    meta: { title: "雨水", requireAuth: true },
+    meta: { title: "惊蛰", requireAuth: true },
     children: [
       {
         path: "/",

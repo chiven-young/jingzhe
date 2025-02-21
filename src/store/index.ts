@@ -6,7 +6,7 @@ const store = createStore({
     appConfig: {
       version: '1.0.0',
       model: 'normal',
-      name: '雨水',
+      name: '惊蛰',
       logo: '',
       menu: {
         stars: false,

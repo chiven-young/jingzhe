@@ -3,9 +3,9 @@ import vue from '@vitejs/plugin-vue'
 import path from 'path';
 
 let options = {
-  base: '/apps/rainwater/',
+  base: '/',
   build: {
-    outDir: 'rainwater',
+    outDir: 'dist',
   },
   server: {
     port: 3004,
@@ -29,13 +29,5 @@ let options = {
 
 export default defineConfig(({ command, mode }) => {
   console.log(`========= mode ${mode} ========= 命令 ${command}=======`);
-  if (mode === 'sit' || mode === 'production' || mode === 'development') {
-    // options.base = '/apps/rainwater/';
-    // options.build.outDir = 'rainwater';
-    options.base = '/';
-    options.build.outDir = 'dist';
-    return options;
-  } else {
-    return options;
-  }
+  return options;
 });

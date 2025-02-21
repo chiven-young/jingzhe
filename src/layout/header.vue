@@ -4,7 +4,7 @@
             <actionBar v-if="zApi.env.isTauri" :osType="currentPlatform" />
             <div v-else class="logo no-select">
                 <img :src="ImgLogoTp" alt="">
-                <span class="name">Rainwater</span>
+                <span class="name">惊蛰</span>
             </div>
             <div class="header-btn">
                 <span class="menu-btn btn square text" @click="zApi.config.toggleSidebar">
