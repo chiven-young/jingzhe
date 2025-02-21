@@ -31,9 +31,10 @@ const handleMenuCommand = (command) => {
     background-color: var(--el-bg-color-layout);
     backdrop-filter: saturate(180%) blur(20px);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
-    border: 1px solid var(--el-border-color-lighter);
+    border: 1px solid var(--border-color-3);
     border-radius: 8px;
     min-width: 90px;
+    box-shadow: var(--box-shadow-3);
     .menu-item {
         padding: 4px 8px;
         font-size: 12px;

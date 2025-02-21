@@ -1,6 +1,6 @@
 <template>
     <div class="cell-item" :class="[ showType, { 'hover': isHover } ]" :data-id="data?.cid" ref="cellItemRef">
-        <div class="z-card wrapper" draggable="true" @dragstart="onDragStart" @contextmenu.prevent="showContextMenu">
+        <div class="wrapper" draggable="true" @dragstart="onDragStart" @contextmenu.prevent="showContextMenu">
             <div v-if="data.type === 'folder'" class="info">
                 <div class="preview-cover" @click="goToPage(data)">
                     <div class="preview-content">
@@ -23,40 +23,23 @@
                             {{ data?.name || '未命名' }}
                         </span>
                     </div>
-                    <div class="desc">{{ data?.description }}</div>
+                    <!-- <div class="desc">{{ data?.description }}</div> -->
+                    <div class="content">
+                    <div class="content-preview markdown-preview" v-html="descText"></div>
+                    </div>
                 </div>
                 <div class="extra-info">
-                    <Icon v-if="data.source !== 'TPT'" class="icon" icon="CloudOffRound" size="14" />
                     <span v-if="data?.updateTime" class="date">更新于{{ moment(data.updateTime).format("MM月DD日 HH:mm") }}</span>
                     <span v-else-if="data?.createTime" class="date">创建于{{ moment(data.createTime).format("MM月DD日 HH:mm") }}</span>
                 </div>
             </div>
-            <el-dropdown class="options-btn" @command="handleCommand">
-                <div class="btn square quaternary">
-                    <Icon icon="MoreVertRound" size="18" />
-                </div>
-                <template #dropdown>
-                <el-dropdown-menu>
-                    <el-dropdown-item v-if="data.status > 0" command="edit">编辑</el-dropdown-item>
-                    <el-dropdown-item v-if="data.groupName !== 'TEMPLATE' && data.type !== 'folder' && data.status > 0" command="star">{{ isStar ? '取消收藏' : '收藏' }}</el-dropdown-item>
-                    <el-dropdown-item v-if="data.groupName !== 'TEMPLATE' && data.status > 0 && data.type !== 'folder'" command="template">保存为模板</el-dropdown-item>
-                    <el-dropdown-item v-if="data.status === 4" command="copyOpenLink">复制发布链接</el-dropdown-item>
-                    <el-dropdown-item v-if="data.status === 0" command="restore">恢复</el-dropdown-item>
-                    <template v-else>
-                        <!-- <el-dropdown-item v-if="data.type === 'folder'" command="deleteAndReleaseChildren">删除并释放内部文件</el-dropdown-item>
-                        <el-dropdown-item v-if="data.type === 'folder'" command="deleteAndDeleteChildren">删除并删除内部文件</el-dropdown-item> -->
-                        <el-dropdown-item command="delete">删除</el-dropdown-item>
-                    </template>
-                    <el-dropdown-item v-if="data.status === 0" command="remove">彻底删除</el-dropdown-item>
-                </el-dropdown-menu>
-                </template>
-            </el-dropdown>
         </div>
     </div>
 </template>
 <script setup>
-import { ref, onMounted, reactive } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import moment from 'moment';
+import marked from '@/utils/markdown';
 import { copyText } from '@/core/utils/tools';
 
 const baseStaticUrl = import.meta.env.VITE_STATIC_BASE_URL;
@@ -67,6 +50,11 @@ const props = defineProps({
     showType: String, // 显示类型（卡片、网格）
 })
 const emit = defineEmits(['changeStatus', 'update:isStar', 'toggleStar', 'saveAsTemplate', 'action', 'connect', 'showContextMenu']);
+
+const descText = computed(() => {
+    const value = props.data?.description ?? ''
+    return marked(value)
+})
 
 const cellItemRef = ref(null);
 const isHover = ref(false);
@@ -149,13 +137,13 @@ onMounted( async () => {
         overflow: hidden;
         position: relative;
         height: 100%;
-        .options-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 10;
-            visibility: hidden;
-        }
+        background-color: var(--bg-content-color);
+        border: 1px solid var(--border-color-3);
+        padding: 8px;
+        border-radius: 8px;
+        box-sizing: border-box;
+        word-wrap: break-word;
+        word-break: break-all;
 
         .info {
             width: 100%;
@@ -200,12 +188,13 @@ onMounted( async () => {
             width: 100%;
             color: var(--el-text-color-primary);
             flex-grow: 1;
+            height: 30px;
+            overflow: hidden;
             .title {
                 font-size: 14px;
                 font-weight: 700;
                 display: flex;
                 align-items: center;
-                padding-right: 30px;
                 box-sizing: border-box;
                 .text {
                     overflow: hidden;
@@ -219,13 +208,31 @@ onMounted( async () => {
             .desc {
                 font-size: 12px;
             }
+            .content {
+                border-top: 1px solid var(--border-color-3);
+                padding-top: 6px;
+                margin-top: 6px;
+            }
+            .content-preview {
+                zoom: 0.4;
+                overflow: hidden;
+                position: relative;
+                mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+                mask-size: 100% 100%;
+                mask-repeat: no-repeat;
+                -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+                -webkit-mask-size: 100% 100%;
+                -webkit-mask-repeat: no-repeat;
+            }
         }
         .extra-info {
             font-size: 12px;
-            color: var(--el-text-color-placeholder);
+            color: var(--text-color-4);
+            background-color: var(--bg-content-color);
+            padding-top: 4px;
             line-height: 1;
+            z-index: 9;
             span, .icon {
-                margin-right: 4px;
                 vertical-align: middle;
             }
         }
@@ -254,9 +261,7 @@ onMounted( async () => {
         }
     }
     .wrapper:hover {
-        .options-btn {
-            visibility: visible;
-        }
+        box-shadow: var(--box-shadow-3);
     }
 }
 .cell-item.list {

@@ -9,13 +9,19 @@
             </div>
         </div>
         <div class="filter"></div>
-        <div ref="listRef" class="item-list" :class="[ showType ]">
+        <div v-if="cellsList.length" class="item-list" :class="[ showType ]">
             <Item v-for="(item, index) in cellsList" :key="index" class="item" :data="item" :showType="showType" v-model:isStar="item.isStar" @toggleStar="toggleStar" @changeStatus="changeCellStatus" @remove="removeCell" @saveAsTemplate="saveAsTemplate" @connect="onConnectCells" @action="onCellAction" @showContextMenu="showContextMenu" />
             <!-- <div v-if="libraryParams?.page !== 'deleted'" class="new-btn" @click="router.push({ path: '/edit' })">
                 <div class="blank">
                     <Icon class="icon" icon="AddRound" size="28" />
                 </div>
             </div> -->
+        </div>
+        <div v-else class="skeleton item-list" :class="[showType]">
+            <div v-for="i in pageData.skeletonCount" :key="i" class="item"></div>
+            <div class="empty">
+                <div class="text">这是空的</div>
+            </div>
         </div>
         <!-- <div class="pagination">
             <el-pagination v-model:current-page="paramsCells.page" v-model:page-size="paramsCells.pageSize" small
@@ -70,6 +76,7 @@ const pageData = reactive({
     loadingCells: false,
     cellsTotal: 0,
     jumperPage: 1,
+    skeletonCount: 20,
 })
 
 const cellsList = ref([]);
@@ -345,6 +352,17 @@ const closeContextMenu = () => {
 }
 const handleMenuCommand = (command) => {
     console.log('command', command)
+    if (command === 'open' || command === 'edit') {
+        onCellAction(contextMenuState.node, command);
+    } else if (command === 'star') {
+        toggleStar(contextMenuState.node?.cid);
+    } else if (command === 'delete') {
+        removeCell(contextMenuState.node?.cid);
+    } else if (command === 'restore') {
+        changeCellStatus(contextMenuState.node?.cid, 2);
+    } else if (command === 'template') {
+        saveAsTemplate(contextMenuState.node);
+    }
 }
 
 
@@ -363,8 +381,6 @@ const addNew = () => {
         //
     }
 }
-
-const listRef = ref(null);
 
 onMounted( async () => {
     bus.on('cells-changed', getLibraryData);
@@ -459,6 +475,33 @@ onUnmounted(() => {
         width: 100%;
         .new-btn {
             display: none;
+        }
+    }
+    .skeleton {
+        overflow: hidden;
+        position: relative;
+        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4));
+        mask-size: 100% 100%;
+        mask-repeat: no-repeat;
+        -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4));
+        -webkit-mask-size: 100% 100%;
+        -webkit-mask-repeat: no-repeat;
+
+        .item {
+            background-color: var(--bg-content-color);
+            min-height: 140px;
+        }
+
+        .empty {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            .text {
+                font-size: 13px;
+                color: var(--text-color-2);
+            }
         }
     }
 }

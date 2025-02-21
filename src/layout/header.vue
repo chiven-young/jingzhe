@@ -170,11 +170,11 @@ onMounted(async () => {
     margin-right: 14px;
     padding: 4px 0;
     img {
-        height: 20px;
-        margin-right: 10px;
+        height: 30px;
+        margin-right: 6px;
     }
     .name {
-        font-size: 14px;
+        font-size: 16px;
         font-weight: bold;
         white-space: nowrap;
         width: 100%;

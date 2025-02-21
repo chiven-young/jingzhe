@@ -65,6 +65,8 @@ const loadingSave = ref(false);
 const saveItem = async () => {
     if (loadingSave.value) return
     if (!itemData.value) return
+    itemData.value.description = itemData.value?.data?.text?.slice(0, 200);
+    itemData.value.data.format = 'markdown';
     store.state.itemSaveStatus = 'saving';
     let res = null;
     loadingSave.value = true;
