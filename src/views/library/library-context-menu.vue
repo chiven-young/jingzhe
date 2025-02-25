@@ -1,21 +1,22 @@
 <template>
     <div class="context-menu"
         :style="{ top: `${state?.top}px`, left: `${state?.left}px` }">
-        <div class="menu-item" @click="handleMenuCommand('edit')">编辑</div>
-        <div class="menu-item" v-if="!state?.node?.isStar" @click="handleMenuCommand('star')">收藏</div>
-        <div class="menu-item" v-else @click="handleMenuCommand('unStar')">取消收藏</div>
         <template v-if="state?.node?.type === 'folder'">
-            <div class="menu-item" @click="handleMenuCommand('document')">新建图文</div>
-            <div class="menu-item" @click="handleMenuCommand('mindmap')">新建思维导图</div>
-            <div class="menu-item" @click="handleMenuCommand('folder')">新建文件夹</div>
+            <div class="menu-item" @click="handleMenuCommand('rename')">重命名</div>
         </template>
-        <div class="menu-item" @click="handleMenuCommand('delete')">删除</div>
+        <div class="menu-item" @click="handleMenuCommand('folder')">新建文件夹</div>
+        <div class="menu-item" @click="handleMenuCommand('document')">新建图文</div>
+        <div class="menu-item" @click="handleMenuCommand('paste')">粘贴</div>
     </div>
 </template>
 <script setup>
 
 const props = defineProps({
     state: Object,
+    clipBoard: {
+        type: Object,
+        default: () => ({})
+    }
 })
 const emit = defineEmits(['command']);
 

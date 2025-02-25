@@ -1,13 +1,13 @@
 <template>
     <div class="menu no-select">
         <WorkspaceBar />
-        <div class="items">
-            <div class="tabs">
-                <div v-for="item in menuBarTabs" :key="item?.value" :title="item?.label"
-                    :class="{ tab: true, active: activeTab?.value === item?.value }" @click="changeTab(item)">
-                    <Icon :icon="item?.icon" size="16" />
-                </div>
+        <div class="tabs">
+            <div v-for="item in menuBarTabs" :key="item?.value" :title="item?.label"
+                :class="{ tab: true, active: activeTab?.value === item?.value }" @click="changeTab(item)">
+                <Icon :icon="item?.icon" size="16" />
             </div>
+        </div>
+        <div class="items">
             <div v-show="activeTab?.value === 'item'" class="menu-content menu-list">
                 <div :class="['item', { active: activeMenuItem === '/' }]"
                     @click="changeMenuItem('/')">
@@ -164,38 +164,38 @@ onMounted(async () => {
     width: 200px;
     display: flex;
     flex-direction: column;
+    .tabs {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: var(--bg-section-color);
+        padding: 1px;
+        border-radius: 5px;
+        box-sizing: border-box;
+        margin-bottom: 8px;
+
+        .tab {
+            color: var(--el-text-color-secondary);
+            cursor: pointer;
+            padding: 4px 0;
+            width: -webkit-fill-available;
+            margin: 1px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tab.active {
+            background-color: var(--el-bg-color);
+            color: var(--el-text-color-primary);
+        }
+    }
 
     .items {
         flex-grow: 1;
         overflow-x: overflow;
         overflow-y: scroll;
-
-        .tabs {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: var(--el-bg-color-page);
-            padding: 1px;
-            border-radius: 5px;
-            box-sizing: border-box;
-
-            .tab {
-                color: var(--el-text-color-secondary);
-                cursor: pointer;
-                padding: 4px 0;
-                width: -webkit-fill-available;
-                margin: 1px;
-                border-radius: 4px;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-            }
-
-            .tab.active {
-                background-color: var(--el-bg-color);
-                color: var(--el-text-color-primary);
-            }
-        }
 
         .group-label {
             font-size: 16px;
@@ -239,8 +239,8 @@ onMounted(async () => {
         }
 
         .item.active {
-            color: var(--el-text-color-primary);
-            background-color: var(--el-bg-color);
+            color: var(--text-color-2);
+            background-color: var(--bg-section-color);
 
             span {
                 font-weight: 600;

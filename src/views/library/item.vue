@@ -1,5 +1,6 @@
 <template>
-    <div class="cell-item" :class="[ showType, { 'hover': isHover } ]" :data-id="data?.cid" ref="cellItemRef">
+    <div class="cell-item" :class="[ showType, data.type, { 'hover': isHover, 'is-cut': isCut } ]" :data-id="data?.cid" ref="cellItemRef">
+        <div v-if="data.type === 'folder'" class="folder-head"></div>
         <div class="wrapper" draggable="true" @dragstart="onDragStart" @contextmenu.prevent="showContextMenu">
             <div v-if="data.type === 'folder'" class="info">
                 <div class="preview-cover" @click="goToPage(data)">
@@ -17,9 +18,8 @@
                     </div>
                 </div>
                 <div class="base">
-                    <div class="title">
+                    <div class="title" :class="{ 'is-star': isStar }">
                         <span class="text" @click="goToPage(data)">
-                            <Icon class="star" v-if="isStar" icon="StarRound" size="24" color="#FAE24C" />
                             {{ data?.name || '未命名' }}
                         </span>
                     </div>
@@ -33,6 +33,7 @@
                     <span v-else-if="data?.createTime" class="date">创建于{{ moment(data.createTime).format("MM月DD日 HH:mm") }}</span>
                 </div>
             </div>
+            <Icon class="star" v-if="isStar" icon="StarRound" size="20" color="#FAE24C" />
         </div>
     </div>
 </template>
@@ -48,6 +49,7 @@ const props = defineProps({
     data: Object, // 细胞数据
     isStar: Boolean, // 是否已被收藏
     showType: String, // 显示类型（卡片、网格）
+    isCut: Boolean,
 })
 const emit = defineEmits(['changeStatus', 'update:isStar', 'toggleStar', 'saveAsTemplate', 'action', 'connect', 'showContextMenu']);
 
@@ -144,6 +146,11 @@ onMounted( async () => {
         box-sizing: border-box;
         word-wrap: break-word;
         word-break: break-all;
+        .star {
+            position: absolute;
+            top: 10px;
+            right: 8px;
+        }
 
         .info {
             width: 100%;
@@ -193,17 +200,20 @@ onMounted( async () => {
             .title {
                 font-size: 14px;
                 font-weight: 700;
+                line-height: 20px;
                 display: flex;
                 align-items: center;
+                justify-content: space-between;
                 box-sizing: border-box;
+                width: 100%;
                 .text {
                     overflow: hidden;
                     text-overflow: ellipsis;
                     white-space: nowrap;
                 }
-                .star {
-                    vertical-align: text-bottom;
-                }
+            }
+            .title.is-star {
+                padding-right: 20px;
             }
             .desc {
                 font-size: 12px;
@@ -299,9 +309,30 @@ onMounted( async () => {
         }
     }
 }
-.cell-item.hover {
+.cell-item.selected {
     .wrapper {
         outline: 2px solid var(--el-color-primary);
+    }
+}
+.cell-item.is-cut {
+    opacity: 0.5;
+}
+.cell-item.folder {
+    .folder-head {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50%;
+        height: 50px;
+        background-color: var(--bg-content-color);
+        border: 1px solid var(--border-color-3);
+        border-radius: 8px;
+        clip-path: polygon(0 0%, 60% 0%, 100% 100%, 0 100%);
+    }
+    .wrapper {
+        margin-top: 16px;
+        height: calc(100% - 16px);
+        box-shadow: 0 -6px 8px 0 rgba(6, 10, 38, .04);
     }
 }
 </style>

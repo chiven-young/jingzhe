@@ -1,5 +1,5 @@
 <template>
-    <div class="library-body no-select">
+    <div class="library-body no-select" @contextmenu.prevent="showMoreContextMenu">
         <div v-if="paramsCells.groupName === 'CONTENT' && libraryParams?.page !== 'deleted'" class="tabs">
             <div :class="{ tab: true, active: !paramsCells.type }" @click="changeType('')">
                 <span class="label">全部</span>
@@ -10,7 +10,7 @@
         </div>
         <div class="filter"></div>
         <div v-if="cellsList.length" class="item-list" :class="[ showType ]">
-            <Item v-for="(item, index) in cellsList" :key="index" class="item" :data="item" :showType="showType" v-model:isStar="item.isStar" @toggleStar="toggleStar" @changeStatus="changeCellStatus" @remove="removeCell" @saveAsTemplate="saveAsTemplate" @connect="onConnectCells" @action="onCellAction" @showContextMenu="showContextMenu" />
+            <Item v-for="(item, index) in cellsList" :key="index" class="item" :data="item" :showType="showType" v-model:isStar="item.isStar" :isCut="store.state.clipBoard?.cid === item?.cid" @toggleStar="toggleStar" @changeStatus="changeCellStatus" @remove="removeCell" @saveAsTemplate="saveAsTemplate" @connect="onConnectCells" @action="onCellAction" @showContextMenu="showContextMenu" />
             <!-- <div v-if="libraryParams?.page !== 'deleted'" class="new-btn" @click="router.push({ path: '/edit' })">
                 <div class="blank">
                     <Icon class="icon" icon="AddRound" size="28" />
@@ -33,7 +33,8 @@
             <el-input v-model="pageData.jumperPage" controls-position="right" size="small" />
             <el-button size="small" @click="refreshList(pageData.jumperPage)">跳转</el-button>
         </div> -->
-        <contextMenu v-if="contextMenuState.show" :state="contextMenuState" @command="handleMenuCommand" />
+        <contextMenu v-if="contextMenuState.show" :state="contextMenuState" :clipBoard="store.state.clipBoard" sence="library" @command="handleMenuCommand" />
+        <moreMenu v-if="moreContextMenuState.show" :state="moreContextMenuState" :clipBoard="store.state.clipBoard" @command="handleMoreMenuCommand" />
     </div>
 </template>
 <script setup>
@@ -45,6 +46,7 @@ import store from '@/store';
 import zApi from '@/core';
 import bus from '@/core/utils/bus';
 import contextMenu from './item-context-menu.vue';
+import moreMenu from './library-context-menu.vue';
 import { useRouter, useRoute } from "vue-router";
 
 const props = defineProps({
@@ -60,14 +62,6 @@ const props = defineProps({
 // 2：私密
 // 3：域内
 // 4：公开
-
-// 后端内容状态（传入status精确查询）
-// 1：草稿
-// 2：待审核
-// 3：审核通过已发布
-// 4：审核失败
-// 5：待发布
-// isDelete:1：已删除
 
 const router = useRouter();
 const route = useRoute();
@@ -87,8 +81,6 @@ const paramsCells = reactive({
     keywords: '',
     maxStatus: 4,
     minStatus: 2,
-    status: '', // 专门针对后端使用
-    isDelete: 0, // 专门针对后端使用
     type: '',
     parentIds: [],
     relationshipType: '',
@@ -116,7 +108,7 @@ const getCellsList = async () => {
     //     cellsList.value.push(item);
     // }
     pageData.loadingCells = false;
-    // console.log('get list', paramsCells, list);
+    console.log('get list', paramsCells, list);
 }
 // 当面包屑变化时请求当前目录下的细胞列表
 const onBreadcrumbsChange = () => {
@@ -127,6 +119,9 @@ const onBreadcrumbsChange = () => {
     } else {
         paramsCells.isRoot = 1;
         paramsCells.parentIds = [];
+    }
+    if (props.libraryParams?.page === 'deleted') {
+        paramsCells.isRoot = null;
     }
     paramsCells.page = 1;
     getCellsList();
@@ -146,8 +141,6 @@ const getLibraryData = ()=> {
     paramsCells.keywords = '';
     paramsCells.minStatus = 1;
     paramsCells.maxStatus = 4;
-    paramsCells.status = '';
-    paramsCells.isDelete = 0;
     paramsCells.type = '';
     paramsCells.isRoot = 1;
     paramsCells.parentIds = [];
@@ -157,7 +150,6 @@ const getLibraryData = ()=> {
         paramsCells.groupName = '';
         paramsCells.minStatus = 0;
         paramsCells.maxStatus = 0;
-        paramsCells.isDelete = 1;
         paramsCells.isRoot = null;
     } else if (props.libraryParams?.page == 'index') {
         paramsCells.minStatus = 2;
@@ -166,16 +158,12 @@ const getLibraryData = ()=> {
         paramsCells.relationshipType = 'star';
         paramsCells.isRoot = null;
         paramsCells.minStatus = 2;
-        paramsCells.status = 0; // 后端没有做星标状态，标记为0表示不使用后端数据
     } if (props.libraryParams?.page == 'template') {
         paramsCells.groupName = 'TEMPLATE';
-        paramsCells.status = 0; // 后端没有做模板，标记为0表示不使用后端数据
     } else if (props.libraryParams?.page == 'material') {
         paramsCells.groupName = 'MATERIAL';
-        paramsCells.status = 'material';
     } else if (props.libraryParams?.page == 'tags') {
         paramsCells.groupName = 'MANAGE';
-        paramsCells.status = 0;
     } else {
         paramsCells.parentIds = [];
         paramsCells.isRoot = null;
@@ -319,7 +307,6 @@ const onCellAction = async (cell, action) => {
                 query: {
                     cid: cell?.cid,
                     type: cell?.type,
-                    source: cell?.source,
                 }
             })
         }
@@ -335,6 +322,8 @@ const contextMenuState = reactive({
     node: null,
 })
 const showContextMenu = (event, data) => {
+    event.stopPropagation(); 
+    closeMoreContextMenu();
     if (!data?.cid) return
     event.preventDefault(); // 禁用浏览器默认右键菜单
     contextMenuState.show = true;
@@ -354,14 +343,75 @@ const handleMenuCommand = (command) => {
     console.log('command', command)
     if (command === 'open' || command === 'edit') {
         onCellAction(contextMenuState.node, command);
-    } else if (command === 'star') {
+    } else if (command === 'star' || command === 'unStar') {
         toggleStar(contextMenuState.node?.cid);
     } else if (command === 'delete') {
-        removeCell(contextMenuState.node?.cid);
+        changeCellStatus(contextMenuState.node?.cid, 0);
     } else if (command === 'restore') {
         changeCellStatus(contextMenuState.node?.cid, 2);
+    } else if (command === 'remove') {
+        removeCell(contextMenuState.node?.cid);
     } else if (command === 'template') {
         saveAsTemplate(contextMenuState.node);
+    } else if (command === 'cut') {
+        store.state.clipBoard = contextMenuState.node;
+        const list = JSON.parse(JSON.stringify(store.state.breadcrumbs));
+        let parentId = null;
+        if (list.length > 0) {
+            parentId = list[list.length - 1].cid;
+        }
+        store.state.clipBoard.parentId = parentId;
+    } else if (command === 'clone') {
+        
+    }
+}
+// 库右键
+const moreContextMenuState = reactive({
+    show: false,
+    top: 0,
+    left: 0,
+    folder: null,
+})
+const showMoreContextMenu = (event) => {
+    event.preventDefault(); // 禁用浏览器默认右键菜单
+    closeContextMenu();
+    moreContextMenuState.show = true;
+    moreContextMenuState.top = event.clientY;
+    moreContextMenuState.left = event.clientX;
+    moreContextMenuState.folder = JSON.parse(JSON.stringify(store.state.breadcrumbs));
+    // console.log('右键', event, moreContextMenuState)
+    // 点击页面其他地方关闭菜单
+    document.addEventListener('click', closeMoreContextMenu);
+}
+const closeMoreContextMenu = () => {
+    moreContextMenuState.show = false;
+    document.removeEventListener('click', closeMoreContextMenu);
+}
+const handleMoreMenuCommand = async (command) => {
+    console.log(command)
+    if (command === 'paste') {
+        console.log('粘贴', store.state.clipBoard, store.state.breadcrumbs);
+        if (!store.state.clipBoard?.cid) return;
+        let thisFolderId = null;
+        if (store.state.breadcrumbs.length > 0) {
+            thisFolderId = store.state.breadcrumbs[store.state.breadcrumbs.length - 1]?.cid;
+        }
+        if (thisFolderId === store.state.clipBoard.parentId) {
+            store.state.clipBoard = null;
+            return
+        }
+        const res = await zApi.cells.moveCell(store.state.clipBoard?.cid, store.state.clipBoard?.parentId, thisFolderId);
+        if (res?.success) {
+            getCellsList();
+            bus.emit('cells-changed', { cid: store.state.clipBoard?.parentId });
+            bus.emit('cells-changed', { cid: thisFolderId });
+            store.state.clipBoard = null;
+        } else {
+            ElMessage({
+                message: '操作失败',
+                type: 'error'
+            })
+        }
     }
 }
 

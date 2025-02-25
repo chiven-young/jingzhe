@@ -31,6 +31,20 @@ import Template from '@/views/library/template.vue';
 import store from '@/store';
 import bus from '@/core/utils/bus';
 import zApi from '@/core';
+import AI from '@/AI';
+
+const getModelsList = async () => {
+    const res = await AI.getOllamaApiList();
+    console.log('get ollama list:', res);
+    store.state.AIModels = res;
+    const model = localStorage.getItem('selectedAIModel');
+    if (model) {
+        const m = store.state.AIModels.find(item => item.model === model);
+        if (m) {
+            store.state.currentAIModel = m.model;
+        }
+    }
+}
 
 onBeforeMount(() => {
     bus.on('workspace-switched', (workspace) => {
@@ -38,7 +52,7 @@ onBeforeMount(() => {
     })
 })
 onMounted(async () => {
-    
+    getModelsList();
 })
 </script>
 <style lang="scss" scoped>

@@ -134,6 +134,18 @@ h1 {
 
 .el-popover.el-popper {
   border-radius: 8px;
+  border: 1px solid var(--border-color-3);
+  background: var(--bg-translucent-color-3);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  .el-popper__arrow::before {
+    border-color: var(--border-color-3);
+    background: var(--bg-translucent-color-3);
+  }
+}
+.el-select__popper.el-popper {
+  border-radius: 8px;
+  border: 1px solid var(--border-color-3);
 }
 
 .popper-container {
@@ -181,7 +193,7 @@ h1 {
 .background-blur {
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
-  background: var(--el-bg-color-layout) !important;
+  background: var(--bg-translucent-color-2) !important;
 }
 .jz-card {
   background-color: var(--bg-content-color);
@@ -276,6 +288,7 @@ h1 {
 .disabled {
   pointer-events: none;
   cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .pointer-events-none {

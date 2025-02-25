@@ -19,6 +19,14 @@
                     <Icon class="icon" icon="ArrowForwardIosRound" size="16" />
                 </span>
             </div>
+            <el-select v-model="store.state.currentAIModel" size="small" placeholder="选择AI模型" @change="selectAIModel">
+                <el-option
+                    v-for="item in store.state.AIModels"
+                    :key="item.model"
+                    :label="item.name"
+                    :value="item.model"
+                />
+            </el-select>
             <!-- <span class="page-title"></span> -->
             <!-- <el-breadcrumb separator="/">
                 <el-breadcrumb-item :to="{ path: '/' }">我的文档</el-breadcrumb-item>
@@ -42,7 +50,7 @@
             <span v-if="route.path === '/edit'" class="btn square text" @click="zApi.config.toggleEditorPanel">
                 <Icon icon="ChromeReaderModeOutlined" size="20" />
             </span>
-            <el-popover placement="bottom" trigger="click" :width="200" popper-style="padding: 0" popper-class="background-blur">
+            <el-popover placement="bottom" trigger="click" :width="200" popper-style="padding: 0">
                 <template #reference>
                     <span class="btn square text">
                         <!-- <Icon icon="MoreHorizRound" size="20" /> -->
@@ -106,6 +114,15 @@ const goToPage = (path) => {
     })
 }
 
+const selectAIModel = (model) => {
+    console.log('model', model)
+    localStorage.setItem('selectedAIModel', model);
+    const m = store.state.AIModels.find(item => item.model === model);
+    if (m) {
+        store.state.currentAIModel = m.model;
+    }
+}
+
 onMounted(async () => {
     zApi.config.setSidebarCollapse(store.state.workspace?.layout?.sidebar?.collapse);
     zApi.config.loadWorkspaceConfig();
@@ -139,6 +156,12 @@ onMounted(async () => {
 
         .el-breadcrumb {
             margin-left: 8px;
+        }
+        .el-select {
+            :deep(.el-select__wrapper) {
+                width: 140px;
+                background-color: transparent;
+            }
         }
     }
 

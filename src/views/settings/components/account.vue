@@ -19,15 +19,6 @@
                 </div>
             </div>
         </div>
-        <div v-if="zApi.env.isTauri" class="section">
-            <div class="label">服务号后管token</div>
-            <el-input v-model="serviceToken" type="textarea" show-word-limit placeholder="eyJ0eXAiO..." />
-            <el-button type="primary" @click="setServiceToken">保存</el-button>
-        </div>
-        <div v-else class="section">
-            <el-button @click="goToLogin">跳转登录</el-button>
-            <div class="text-s">[ ! ] 请点击按钮跳转登录后，返回此页面并刷新。</div>
-        </div>
     </div>
 </template>
 <script setup>
@@ -37,23 +28,8 @@ import zApi from '@/core';
 import Cookies from 'js-cookie'
 import { ElMessage } from 'element-plus';
 
-const staticBaseUrl = import.meta.env.VITE_STATIC_BASE_URL;
-const goToLogin = () => {
-    window.open(`${staticBaseUrl}/static/platform/#/login`, '_blank');
-}
-
-const serviceToken = ref('');
-const setServiceToken = () => {
-    if(zApi.env.isTauri) {
-        localStorage.setItem('serviceToken', serviceToken.value);
-    } else {
-        Cookies.set('TPTTOKEN', serviceToken.value, { path: '/', secure: false, sameSite: 'Lax' });
-    }
-    zApi.user.getUserData();
-    ElMessage.success('保存成功');
-}
 onMounted( async ()=> {
-    serviceToken.value = localStorage.getItem('serviceToken');
+    
 })
 </script>
 <style lang="scss" scoped>

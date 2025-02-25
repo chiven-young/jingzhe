@@ -1,5 +1,5 @@
 <template>
-    <div :class="['panel-wrapper', scene]">
+    <div :class="['panel-wrapper', scene, { 'full': full }]">
         <div class="panel-head">
             <div class="title">{{ name }}</div>
             <div v-if="desc" class="desc">{{ desc }}</div>
@@ -17,7 +17,8 @@ const props = defineProps({
         default: ''
     },
     desc: String,
-    scene: String
+    scene: String,
+    full: Boolean,
 })
 </script>
 <style lang="scss" scoped>
@@ -79,5 +80,13 @@ const props = defineProps({
 }
 .panel-wrapper.opbar::-webkit-scrollbar {
     display: none;
+}
+.panel-wrapper.full {
+    display: flex;
+    flex-direction: column;
+    .panel-content {
+        flex-grow: 1;
+        overflow: hidden;
+    }
 }
 </style>

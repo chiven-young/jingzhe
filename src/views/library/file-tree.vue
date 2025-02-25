@@ -14,7 +14,7 @@
                 </span>
             </template>
         </el-tree>
-        <contextMenu v-if="contextMenuState.show" :state="contextMenuState" @command="handleMenuCommand" />
+        <contextMenu v-if="contextMenuState.show" sence="tree" :state="contextMenuState" @command="handleMenuCommand" />
     </div>
 </template>
 <script lang="ts" setup>
@@ -40,8 +40,15 @@ const getFilesTree = async (params) => {
             cid: '0',
             correlationsChildren: store.state.cellsTree,
         }, params.cid);
-        if (resNode?.node) {
-            resNode.node.name = params.name ? params.name : resNode.node.name;
+        const res = await zApi.cells.getCell({
+            cid: params.cid,
+            showCorrelationChildren: 1,
+        })
+        if (resNode?.node && res.data) {
+            resNode.node.name = res.data?.name;
+            resNode.node.type = res.data?.type;
+            resNode.node.status = res.data?.status;
+            resNode.node.correlationsChildren = res.data?.correlationsChildren || [];
         }
         sessionStorage.setItem('fileTreeData', JSON.stringify(store.state.cellsTree));
         return

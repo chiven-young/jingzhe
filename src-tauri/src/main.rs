@@ -8,7 +8,7 @@ use std::convert::Infallible;
 use tauri::generate_context;
 
 async fn proxy(req: Request<Body>) -> Result<Response<Body>, Infallible> {
-    let target_host = "https://tptsit.itaiping.com";
+    let target_host = "https://data.chiven.net";
     let uri_str = format!("{}{}", target_host, req.uri());
     let uri: Uri = uri_str.parse().expect("Failed to parse URI");
 
@@ -25,7 +25,7 @@ async fn proxy(req: Request<Body>) -> Result<Response<Body>, Infallible> {
                 .unwrap_or(&HeaderValue::from_static("Mozilla/5.0"))
                 .clone(),
         )
-        .header("Referer", "https://tptcdnsit.itaiping.com/")
+        .header("Referer", "https://data.chiven.net/")
         .header("Origin", target_host)
         .header("Host", "tptsit.itaiping.com")
         .header("Accept", "*/*");

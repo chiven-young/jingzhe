@@ -1,17 +1,17 @@
 <template>
-    <div class="panel no-select">
+    <div class="panel-container no-select">
         <div class="tabs">
             <div v-for="(tab, index) in tabs" :key="index" class="tab"
                 :class="{ active: activeTab.value === tab.value }" @click="changeTab(tab)">
                 <Icon class="icon" :icon="tab.icon" size="18" />
             </div>
         </div>
-        <div v-if="data" class="content">
+        <div v-if="data" class="panel-body">
             <Insert v-if="activeTab?.value === 'insert'" :type="type" scene="panel" />
             <Style v-else-if="activeTab?.value === 'style'" :type="type" :data="data" scene="panel"></Style>
             <pageStyle v-else-if="activeTab?.value === 'pageStyle'" :type="type" :data="data" scene="panel"></pageStyle>
             <pageInfo v-else-if="activeTab?.value === 'info'" :type="type" :data="data" :workspace="store.state.workspace" scene="panel"></pageInfo>
-            <AI v-else-if="activeTab?.value === 'ai'" :type="type" :data="data" scene="panel"></AI>
+            <AI v-else-if="activeTab?.value === 'ai'" :type="type" :data="data" scene="panel" full></AI>
             <action v-else-if="activeTab?.value === 'action'" :type="type" scene="panel"></action>
         </div>
     </div>
@@ -74,7 +74,7 @@ const changeTab = (tab) => {
 </script>
 
 <style lang="scss" scoped>
-.panel {
+.panel-container {
     height: 100%;
     width: 260px;
     display: flex;
@@ -109,7 +109,7 @@ const changeTab = (tab) => {
         }
     }
 
-    .content {
+    .panel-body {
         flex-grow: 1;
         overflow-y: scroll;
         padding: 16px;

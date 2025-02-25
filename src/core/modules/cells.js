@@ -274,7 +274,6 @@ export default class Cells {
      * @param {String} cid - 细胞id
      * @param {String} password - 密码
      * @param {Number} showUser - 是否显示用户信息
-     * @param {Number} showCollaborators - 是否显示协作者
      * @param {Number} showCorrelationParents - 是否显示上级关联细胞
      * @param {Number} showCorrelationChildren - 是否显示下级关联细胞
      * @param {Boolean} deepQuery - 是否深度查找主属性下对应的数据，如果启用，则不会再查用户、关联细胞等附属属性
@@ -286,6 +285,38 @@ export default class Cells {
         const { cid, source } = params;
         try {
             let res = await Workspace.cellsDB.get(cid);
+            if (params?.showCorrelationChildren) {
+                const relationsRes = await Workspace.cellsRelationsDB.find({
+                    selector: {
+                        sourceId: cid,
+                    }
+                })
+                const relation = relationsRes.docs;
+                const targetCellCids = relation.map(item => item.targetId);
+                const targetCellsRes = await Workspace.cellsDB.find({
+                    selector: {
+                        _id: { $in: targetCellCids },
+                    },
+                    fields: cellFieldsForTag
+                })
+                res.correlationsChildren = targetCellsRes.docs;
+            }
+            if (params?.showCorrelationParents) {
+                const relationsRes = await Workspace.cellsRelationsDB.find({
+                    selector: {
+                        targetId: cid,
+                    }
+                })
+                const relation = relationsRes.docs;
+                const sourceCellCids = relation.map(item => item.sourceId);
+                const sourceCellsRes = await Workspace.cellsDB.find({
+                    selector: {
+                        _id: { $in: sourceCellCids },
+                    },
+                    fields: cellFieldsForTag
+                })
+                res.correlationsParents = sourceCellsRes.docs;
+            }
             return {
                 code: '1000',
                 success: true,

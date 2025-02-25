@@ -72,7 +72,6 @@
                     <div class="section-title">测试</div>
                 </div>
                 <div class="section-body">
-                    <!-- <pre><code>{{ state.fetchRes3 }}</code></pre> -->
                     <pre><code>{{ state.fetchRes4 }}</code></pre>
                 </div>
             </div>
@@ -86,7 +85,6 @@ import requests from "@/utils/requests";
 import axios from 'axios';
 import { fetch } from '@tauri-apps/plugin-http';
 import Cookies from 'js-cookie'
-const token = Cookies.get("TPTTOKEN");
 
 const state = reactive({
     workspaceTotal: 0,
@@ -189,11 +187,17 @@ const deleteCell = async (cid) => {
     getCellList();
 }
 
+const getOllamaApiList = async () => {
+    const res = await axios.get('http://localhost:11434/api/tags');
+    console.log('get ollama list:', res);
+}
+
 
 onMounted( async () => {
     await getWorkspaceList();
     getCurrentWorkspace();
     // getCellList();
+    getOllamaApiList();
 
     if (zApi.env.isTauri) {
         // state.fetchRes3 = await requests.get(`https://weibo.com/ajax/side/hotSearch`);

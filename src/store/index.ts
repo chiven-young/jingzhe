@@ -24,6 +24,9 @@ const store = createStore({
     cellsTree: [],
     breadcrumbs: [],
     itemSaveStatus: 'saved',
+    clipBoard: null,
+    AIModels: [],
+    currentAIModel: null,
 
     loading: false, // 全局的loading
   },
