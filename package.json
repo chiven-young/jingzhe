@@ -19,6 +19,7 @@
     "@tauri-apps/plugin-notification": "^2.0.0",
     "@tauri-apps/plugin-os": "^2.0.0",
     "axios": "^1.6.5",
+    "cells-db": "^1.0.0",
     "element-plus": "^2.4.4",
     "events": "^3.3.0",
     "file-saver": "^2.0.5",
