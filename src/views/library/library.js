@@ -1,4 +1,4 @@
-import zApi from '@/core';
+import jingApi from '@/core';
 import store from '@/store';
 
 function getTreeListFromCache () {
@@ -14,25 +14,25 @@ export default class Library {
     // 获取目录树
     static async getTree () {
         const list = getTreeListFromCache();
-        const tree = list.find(item => item.id === zApi.workspace?.currentWorkspace?.id);
+        const tree = list.find(item => item.id === jingApi.workspace?.currentWorkspace?.id);
         if (tree && tree?.tree?.length) {
             store.state.cellsTree = tree.tree;
             return tree.tree;
         }
         let arr = await this.getList('0');
-        arr = sortByChildrenSort(arr, zApi.workspace?.currentWorkspace?.data?.rootCells);
+        arr = sortByChildrenSort(arr, jingApi.workspace?.currentWorkspace?.data?.rootCells);
         this.saveTreeToCache(arr);
         store.state.cellsTree = arr;
         return arr;
     }
     static saveTreeToCache (tree) {
         let list = getTreeListFromCache();
-        const index = list.findIndex(item => item.id === zApi.workspace?.currentWorkspace?.id);
+        const index = list.findIndex(item => item.id === jingApi.workspace?.currentWorkspace?.id);
         if (index !== -1) {
             list[index].tree = tree;
         } else {
             list.push({
-                id: zApi.workspace?.currentWorkspace?.id,
+                id: jingApi.workspace?.currentWorkspace?.id,
                 tree: tree,
             });
         }
@@ -55,7 +55,7 @@ export default class Library {
             params.isRoot = null;
         }
         try {
-            res = await zApi.cells.getCells(params)
+            res = await jingApi.cells.getCells(params)
         } catch (error) { };
         let list = res?.data?.list || [];
         const resNode = findNodeById({
@@ -129,7 +129,7 @@ export default class Library {
             const list = store.state.cellsTree.map((item) => {
                 return item?.cid;
             })
-            await zApi.cells.saveRootCells(list);
+            await jingApi.cells.saveRootCells(list);
             return
         }
         const res = findNodeById({
@@ -148,7 +148,7 @@ export default class Library {
         const childrenSort = list.map((item) => {
             return item.cid;
         });
-        await zApi.cells.updateCell({
+        await jingApi.cells.updateCell({
             cid: parent.cid,
             config: {
                 ...parent.config,

@@ -5,7 +5,7 @@ import Config from './modules/config';
 import Cells from './modules/cells';
 import Env from './modules/env';
 
-export default class zApi {
+export default class jingApi {
     static workspace = Workspace;
     static user = User;
     static config = Config;

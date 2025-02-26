@@ -1,13 +1,13 @@
 <template>
     <div class="header no-select" data-tauri-drag-region>
         <div class="left">
-            <actionBar v-if="zApi.env.isTauri" :osType="currentPlatform" />
+            <actionBar v-if="jingApi.env.isTauri" :osType="currentPlatform" />
             <div v-else class="logo no-select">
                 <img :src="ImgLogoTp" alt="">
                 <span class="name">惊蛰</span>
             </div>
             <div class="header-btn">
-                <span class="menu-btn btn square text" @click="zApi.config.toggleSidebar">
+                <span class="menu-btn btn square text" @click="jingApi.config.toggleSidebar">
                     <Icon icon="ChromeReaderModeOutlined" size="18" />
                 </span>
             </div>
@@ -39,7 +39,7 @@
                 </template>
                 <Addbar @select="hiddenAddBar" />
             </el-popover>
-            <!-- <span v-if="route.path === '/edit'" class="btn square text" @click="zApi.config.toggleEditorPanel">
+            <!-- <span v-if="route.path === '/edit'" class="btn square text" @click="jingApi.config.toggleEditorPanel">
                 <Icon icon="ChromeReaderModeOutlined" size="20" />
             </span> -->
             <el-popover placement="bottom" trigger="click" :width="200" popper-style="padding: 0">
@@ -62,7 +62,7 @@ import Addbar from '../components/add-bar.vue';
 import ItemMenu from '../components/item-menu.vue';
 import FileOPerations from '../components/file-operations.vue';
 import ImgLogoTp from '@/assets/img/logo.png';
-import zApi from '@/core';
+import jingApi from '@/core';
 import store from '@/store';
 import actionBar from '@/components/action-bar.vue';
 
@@ -115,8 +115,8 @@ const selectAIModel = (model) => {
 }
 
 onMounted(async () => {
-    zApi.config.setSidebarCollapse(store.state.workspace?.layout?.sidebar?.collapse);
-    zApi.config.loadWorkspaceConfig();
+    jingApi.config.setSidebarCollapse(store.state.workspace?.layout?.sidebar?.collapse);
+    jingApi.config.loadWorkspaceConfig();
 })
 </script>
 <style lang="scss" scoped>

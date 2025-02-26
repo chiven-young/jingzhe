@@ -8,7 +8,7 @@
         </div>
         <div v-if="workspace" class="content">
             <div>本地配置版本: {{ workspace?.version || '无' }}</div>
-            <div>{{ zApi.env.isTauri ? '当前环境: Tauri' : '当前环境: 浏览器' }}</div>
+            <div>{{ jingApi.env.isTauri ? '当前环境: Tauri' : '当前环境: 浏览器' }}</div>
             <br />
             <div class="item">
                 <div class="label">菜单</div>
@@ -22,7 +22,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import store from '@/store';
-import zApi from '@/core';
+import jingApi from '@/core';
 import { useRouter, useRoute } from 'vue-router';
 import { ElMessage } from 'element-plus';
 
@@ -62,7 +62,7 @@ const onMenuChange = async (list) => {
             workspace.value.menus[each.name] = false
         }
     }
-    await zApi.config.setMenus(workspace.value.menus);
+    await jingApi.config.setMenus(workspace.value.menus);
     workspace.value = JSON.parse(JSON.stringify(store.state.workspace));
 }
 const loadMenusConfig = () => {
@@ -76,7 +76,7 @@ const loadMenusConfig = () => {
 
 const onConfigChange = async (key,  value) => {
     workspace.value.config[key] = value;
-    await zApi.config.setConfig(workspace.value.config);
+    await jingApi.config.setConfig(workspace.value.config);
     workspace.value = JSON.parse(JSON.stringify(store.state.workspace));
 }
 

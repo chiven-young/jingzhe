@@ -10,7 +10,7 @@ import './style/markdown.scss';
 import * as Icons from '@vicons/material';
 import store from "./store";
 import i18n from './i18n'
-import zApi from './core';
+import jingApi from './core';
 
 const app = createApp(App);
 app.use(router);
@@ -35,4 +35,4 @@ const Icon = (props: { icon: string, size: string, color: string }) => {
 app.component('Icon', Icon)
 
 import { appConfig } from './config/index';
-zApi.workspace.init(appConfig);
+jingApi.workspace.init(appConfig);

@@ -3,7 +3,7 @@
         <div class="section">
             <div class="section-content">
                 <div class="themes">
-                    <div v-for="theme in themes" :key="theme.name" @click="zApi.config.setTheme(theme.value)"
+                    <div v-for="theme in themes" :key="theme.name" @click="jingApi.config.setTheme(theme.value)"
                         class="theme">
                         <div class="preview"
                             :class="[theme.value, { 'active': store.state.workspace?.appearance?.theme === theme.preview }]">
@@ -20,7 +20,7 @@
                 <div class="colors">
                     <div v-for="color in primaryColors" :key="color.name"
                         :class="{ 'active': store.state.workspace?.appearance?.primaryColor === color.value }"
-                        @click="zApi.config.setPrimaryColor(color.value)" class="color"
+                        @click="jingApi.config.setPrimaryColor(color.value)" class="color"
                         :style="{ background: color.value, borderColor: color.value }">
                     </div>
                 </div>
@@ -30,7 +30,7 @@
 </template>
 <script setup>
 import store from '@/store';
-import zApi from '@/core';
+import jingApi from '@/core';
 
 const themes = [
     // {

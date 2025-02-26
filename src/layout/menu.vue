@@ -105,7 +105,7 @@ import { menuBarTabs, itemMenu } from '@/config/options';
 import WorkspaceBar from '../components/workspace-bar.vue';
 import FileTree from '@/views/library/file-tree.vue';
 import { useRouter, useRoute } from 'vue-router';
-import zApi from '@/core';
+import jingApi from '@/core';
 import store from '@/store';
 import bus from '@/core/utils/bus';
 

@@ -30,11 +30,11 @@ import FolderEdit from '@/components/folder-edit.vue';
 import Template from '@/views/library/template.vue';
 import store from '@/store';
 import bus from '@/core/utils/bus';
-import zApi from '@/core';
+import jingApi from '@/core';
 
 onBeforeMount(() => {
     bus.on('workspace-switched', (workspace) => {
-        zApi.config.loadWorkspaceConfig();
+        jingApi.config.loadWorkspaceConfig();
     })
 })
 </script>

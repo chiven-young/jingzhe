@@ -15,13 +15,13 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import bus from '@/core/utils/bus';
-import zApi from '@/core';
+import jingApi from '@/core';
 
 const showDialog = ref(false);
 
 const list = ref([]);
 const getList = async () => {
-    const res = await zApi.cells.getCells({
+    const res = await jingApi.cells.getCells({
         groupName: 'TEMPLATE',
         minStatus: 1,
         maxStatus: 4,

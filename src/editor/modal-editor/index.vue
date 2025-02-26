@@ -37,7 +37,7 @@
 import { ref, onMounted } from 'vue';
 import Edit from './cell-edit.vue';
 import Bus from '@/core/utils/bus';
-import zApi from '@/core';
+import jingApi from '@/core';
 import { ElMessage } from 'element-plus'
 
 const emit = defineEmits(['changeStatus', 'update']);
@@ -46,7 +46,7 @@ const editDialogVisible = ref(false);
 const currentCell = ref({});
 
 const saveCell = async () => {
-    const res = await zApi.cells.updateCell(currentCell.value)
+    const res = await jingApi.cells.updateCell(currentCell.value)
     if (res?.success) {
         ElMessage({
             message: '已保存',
@@ -62,7 +62,7 @@ const saveCell = async () => {
 }
 // 修改细胞状态
 const changeCellStatus = async (status) => {
-    const res = await zApi.cells.updateCell({
+    const res = await jingApi.cells.updateCell({
         cid: currentCell.value?.cid,
         status: status,
     })
@@ -81,7 +81,7 @@ const changeCellStatus = async (status) => {
 }
 // 修改细胞分组
 const changeCellGroup = async (groupName) => {
-    const res = await zApi.cells.updateCell({
+    const res = await jingApi.cells.updateCell({
         cid: currentCell.value?.cid,
         groupName: groupName
     })

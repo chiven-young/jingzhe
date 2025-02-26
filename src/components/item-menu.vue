@@ -5,7 +5,7 @@
             <span class="label">我的工作区</span>
             <span class="shortcut-keys"></span>
         </div>
-        <div class="menu-item" @click="zApi.config.toggleTheme">
+        <div class="menu-item" @click="jingApi.config.toggleTheme">
             <template v-if="store.state.workspace?.appearance?.theme === 'light'">
                 <Icon class="icon" icon="DarkModeRound" size="16" />
                 <span class="label">暗夜主题</span>
@@ -61,7 +61,7 @@
 <script setup>
 import bus from '@/core/utils/bus';
 import { useRouter, useRoute } from 'vue-router';
-import zApi from '@/core';
+import jingApi from '@/core';
 import store from '@/store';
 
 const route = useRoute();

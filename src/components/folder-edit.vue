@@ -17,7 +17,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import bus from '@/core/utils/bus';
-import zApi from '@/core';
+import jingApi from '@/core';
 import store from '@/store';
 
 const showDialog = ref(false);
@@ -33,19 +33,19 @@ const paramsFolder = ref({
 const submit = async () => {
     let res = null;
     if (!paramsFolder.value.cid) {
-        res = await zApi.cells.addCell(paramsFolder.value);
+        res = await jingApi.cells.addCell(paramsFolder.value);
         if (res.success && res.data) {
             paramsFolder.value.cid = res.data;
         }
         if (store.state.breadcrumbs?.length > 0) {
             const sourceId = store.state.breadcrumbs[store.state.breadcrumbs.length - 1]?.cid;
-            zApi.cells.connectCells({
+            jingApi.cells.connectCells({
                 sourceId,
                 targetId: paramsFolder.value.cid,
             })
         }
     } else {
-        res = await zApi.cells.updateCell(paramsFolder.value);
+        res = await jingApi.cells.updateCell(paramsFolder.value);
     }
     if (res.success) {
         showDialog.value = false;

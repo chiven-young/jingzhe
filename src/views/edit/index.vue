@@ -21,7 +21,7 @@
 <script setup>
 import { ref, onMounted, reactive, onBeforeUnmount, onBeforeMount, watch } from 'vue';
 import bus from '@/core/utils/bus';
-import zApi from '@/core';
+import jingApi from '@/core';
 import store from '@/store';
 import { cellDataFormat } from '@/core/utils/format';
 import { useRouter, useRoute } from 'vue-router';
@@ -47,7 +47,7 @@ const getItemData = async () => {
     let res = null;
     if (route.query.cid) {
         paramsGet.cid = route.query.cid;
-        res = await zApi.cells.getCell(paramsGet);
+        res = await jingApi.cells.getCell(paramsGet);
         itemData.value = cellDataFormat(res?.data);
     } else {
         res = cellDataFormat({});
@@ -72,14 +72,14 @@ const saveItem = async () => {
     try {
         if (!route.query.cid || route.query.cid === 'new') {
             // 如果是新项目
-            res = await zApi.cells.addCell(itemData.value);
+            res = await jingApi.cells.addCell(itemData.value);
             if (res?.data) {
                 itemData.value.cid = res.data;
                 changeQuery(itemData.value.cid, itemData.value?.type);
             }
             if (store.state.breadcrumbs?.length > 0) {
                 const sourceId = store.state.breadcrumbs[store.state.breadcrumbs.length - 1]?.cid;
-                zApi.cells.connectCells({
+                jingApi.cells.connectCells({
                     sourceId,
                     targetId: itemData.value.cid,
                 })
@@ -87,7 +87,7 @@ const saveItem = async () => {
         } else {
             // 如果是更新
             // console.log('准备更新数据', itemData.value)
-            res = await zApi.cells.updateCell(itemData.value);
+            res = await jingApi.cells.updateCell(itemData.value);
         }
         store.state.itemSaveStatus = 'saved';
     } catch (e) {}

@@ -11,7 +11,7 @@
 </template>
 <script setup>
 import { ref, onMounted, onUnmounted, nextTick, reactive } from 'vue'
-import zApi from '@/core';
+import jingApi from '@/core';
 import { WebviewWindow } from '@tauri-apps/api/webviewWindow'
 import { getCurrentWindow } from '@tauri-apps/api/window';
 

@@ -22,7 +22,7 @@ import libraryBody from './main.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { itemMenu } from '@/config/options';
 import store from '@/store';
-import zApi from '@/core';
+import jingApi from '@/core';
 
 const route = useRoute();
 const router = useRouter();
@@ -77,7 +77,7 @@ const getLibraryParams = async () => {
     libraryParams.page = route.params.page;
     const cids = route.params.breadcrumbs || [];
     if (cids.length) {
-        const res = await zApi.cells.getCells({ cids: cids });
+        const res = await jingApi.cells.getCells({ cids: cids });
         const list = res.data.list;
         let breadcrumbs = [];
         for (const each of cids) {

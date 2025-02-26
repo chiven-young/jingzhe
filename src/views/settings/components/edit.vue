@@ -2,14 +2,14 @@
     <div class="settings-content">
         <div class="item flex">
             <div class="label">使用顶部工具栏</div>
-            <el-switch v-model="store.state.workspace.editor.showTopToolBar" @change="zApi.config.setShowTopToolBar"></el-switch>
+            <el-switch v-model="store.state.workspace.editor.showTopToolBar" @change="jingApi.config.setShowTopToolBar"></el-switch>
         </div>
     </div>
 </template>
 <script setup>
 import { ref, onMounted } from 'vue'
 import store from '@/store';
-import zApi from '@/core';
+import jingApi from '@/core';
 
 onMounted( async ()=> {
     console.log('config', store.state.workspace)

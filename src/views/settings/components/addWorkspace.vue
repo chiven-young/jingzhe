@@ -11,7 +11,7 @@
 </template>
 <script setup>
 import { reactive } from 'vue'
-import zApi from '@/core';
+import jingApi from '@/core';
 
 const emit = defineEmits(['close']);
 
@@ -20,9 +20,9 @@ const workspaceData = reactive({
     description: '',
 })
 const createWorkspace = async () => {
-    const res = await zApi.workspace.createWorkspace(workspaceData);
+    const res = await jingApi.workspace.createWorkspace(workspaceData);
     if (res?.data?.id) {
-        zApi.workspace.switchWorkspace(res.data.id);
+        jingApi.workspace.switchWorkspace(res.data.id);
         emit('close');
     }
 }

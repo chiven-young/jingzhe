@@ -43,7 +43,7 @@ import Item from './item.vue';
 import { fileTypeOptions } from '@/config/options';
 import { ElMessage } from 'element-plus'
 import store from '@/store';
-import zApi from '@/core';
+import jingApi from '@/core';
 import bus from '@/core/utils/bus';
 import contextMenu from './item-context-menu.vue';
 import moreMenu from './library-context-menu.vue';
@@ -97,7 +97,7 @@ const getCellsList = async () => {
     pageData.loadingCells = true;
     let res = {};
     try {
-        res = await zApi.cells.getCells(paramsCells);
+        res = await jingApi.cells.getCells(paramsCells);
     } catch (e) { }
     const list = res?.data?.list || [];
     pageData.cellsTotal = res?.data?.total || 0;
@@ -181,7 +181,7 @@ const refreshList = (page) => {
 
 // 修改细胞状态
 const changeCellStatus = async (cid, status) => {
-    const res = await zApi.cells.updateCell({
+    const res = await jingApi.cells.updateCell({
         cid: cid,
         status: status,
     })
@@ -202,7 +202,7 @@ const changeCellStatus = async (cid, status) => {
 const toggleStar = async (cid) => {
     const cell = cellsList.value.find(item => item.cid == cid);
     if (cell?.isStar) {
-        const res = await zApi.cells.disconnectCellAndUser({
+        const res = await jingApi.cells.disconnectCellAndUser({
             cid: cid,
             type: 'star'
         })
@@ -215,7 +215,7 @@ const toggleStar = async (cid) => {
             getCellsList();
         }
     } else {
-        const res = await zApi.cells.connectCellAndUser({
+        const res = await jingApi.cells.connectCellAndUser({
             cid: cid,
             type: 'star'
         })
@@ -231,7 +231,7 @@ const toggleStar = async (cid) => {
 }
 // 删除细胞
 const removeCell = async (cid) => {
-    const res = await zApi.cells.deleteCell({
+    const res = await jingApi.cells.deleteCell({
         cid: cid
     });
     if (res?.success) {
@@ -256,7 +256,7 @@ const saveAsTemplate = async (data) => {
         groupName: 'TEMPLATE',
         status: 1
     }
-    const res = await zApi.cells.addCell(params);
+    const res = await jingApi.cells.addCell(params);
     if (res?.success) {
         ElMessage({
             message: '保存成功',
@@ -271,7 +271,7 @@ const saveAsTemplate = async (data) => {
 }
 const onConnectCells = async (data) => {
     const params = JSON.parse(data);
-    const res = await zApi.cells.connectCells(params);
+    const res = await jingApi.cells.connectCells(params);
     if (res?.success) {
         ElMessage({
             message: '操作成功',
@@ -400,7 +400,7 @@ const handleMoreMenuCommand = async (command) => {
             store.state.clipBoard = null;
             return
         }
-        const res = await zApi.cells.moveCell(store.state.clipBoard?.cid, store.state.clipBoard?.parentId, thisFolderId);
+        const res = await jingApi.cells.moveCell(store.state.clipBoard?.cid, store.state.clipBoard?.parentId, thisFolderId);
         if (res?.success) {
             getCellsList();
             bus.emit('cells-changed', { cid: store.state.clipBoard?.parentId });

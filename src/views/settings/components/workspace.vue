@@ -11,11 +11,11 @@
                 <div class="operation">
                     <el-button size="small" round :disabled="store.state.workspace?.id === item?.id" @click="loadWorkspace(item)">{{ store.state.workspace?.id === item?.id ? '使用中' : '使用' }}</el-button>
                     <el-button size="small" round @click="toEdit(item)">编辑</el-button>
-                    <el-button size="small" round @click="zApi.workspace.exportWorkspace(item?.id)">导出</el-button>
+                    <el-button size="small" round @click="jingApi.workspace.exportWorkspace(item?.id)">导出</el-button>
                     <el-button size="small" round plain type="danger" @click="deleteWorkspace(item.id)">删除</el-button>
                 </div>
             </div>
-            <!-- <div class="card-item add" @click="zApi.workspace.importWorkspace">
+            <!-- <div class="card-item add" @click="jingApi.workspace.importWorkspace">
                 <div class="content">
                     <Icon icon="ArrowCircleDownRound" size="24" />
                     <div class="label">导入工作区</div>
@@ -35,14 +35,14 @@
 <script setup>
 import { ref, onMounted, reactive } from 'vue'
 import store from '@/store';
-import zApi from '@/core';
+import jingApi from '@/core';
 import bus from '@/core/utils/bus';
 
 const emit = defineEmits(['close']);
 
 const workspaceList = ref([]);
 const getWorkspaceList = async () => {
-    const res = await zApi.workspace.getWorkspaceList();
+    const res = await jingApi.workspace.getWorkspaceList();
     workspaceList.value = res?.data?.list || [];
 };
 
@@ -65,20 +65,20 @@ const resetData = () => {
     workspaceData.description = '';
 }
 const updateWorkspace = async () => {
-    const res = await zApi.workspace.updateWorkspace(workspaceData, false);
+    const res = await jingApi.workspace.updateWorkspace(workspaceData, false);
     // console.log(res);
     getWorkspaceList();
 }
 const loadWorkspace = async (item) => {
-    const res = await zApi.workspace.switchWorkspace(item.id);
-    zApi.config.loadWorkspaceConfig();
+    const res = await jingApi.workspace.switchWorkspace(item.id);
+    jingApi.config.loadWorkspaceConfig();
     bus.emit('cells-changed', null);
     resetData();
     emit('close');
     // console.log(res);
 }
 const deleteWorkspace = async (id) => {
-    const res = await zApi.workspace.deleteWorkspace(id);
+    const res = await jingApi.workspace.deleteWorkspace(id);
     console.log(res);
     await getWorkspaceList();
 }

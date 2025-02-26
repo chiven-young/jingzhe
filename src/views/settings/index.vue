@@ -41,7 +41,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import bus from '@/core/utils/bus';
-import zApi from '@/core';
+import jingApi from '@/core';
 import Workspace from './components/workspace.vue';
 import AddWorkspace from './components/addWorkspace.vue';
 import Edit from './components/edit.vue';
@@ -52,7 +52,7 @@ const showDialog = ref(false);
 const activeMenu = ref(null);
 const clickMenu = (item) => {
     if (item.value === 'importWorkspace') {
-        zApi.workspace.importWorkspace();
+        jingApi.workspace.importWorkspace();
     } else {
         activeMenu.value = item;
     }

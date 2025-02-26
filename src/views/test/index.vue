@@ -14,7 +14,7 @@
                         <el-input v-model="workspaceData.description" type="textarea" placeholder="请输入工作区描述"></el-input>
                         <el-button @click="createWorkspace">创建工作区</el-button>
                         <el-button @click="updateWorkspace">更新工作区</el-button>
-                        <el-button @click="zApi.workspace.importWorkspace">导入工作区</el-button>
+                        <el-button @click="jingApi.workspace.importWorkspace">导入工作区</el-button>
                     </div>
                     <div class="card-list">
                         <el-card v-for="(item, index) in workspaceList" :key="index" class="card-item" shadow="hover">
@@ -30,7 +30,7 @@
                             </div>
                             <template #footer>
                                 <el-button :disabled="workspaceData?.id === item?.id" @click="loadWorkspace(item)">使用</el-button>
-                                <el-button @click="zApi.workspace.exportWorkspace(item?.id)">导出</el-button>
+                                <el-button @click="jingApi.workspace.exportWorkspace(item?.id)">导出</el-button>
                                 <el-button @click="deleteWorkspace(item.id)">删除</el-button>
                             </template>
                         </el-card>
@@ -80,7 +80,7 @@
 </template>
 <script setup>
 import { ref, reactive, onMounted } from 'vue';
-import zApi from '@/core';
+import jingApi from '@/core';
 import requests from "@/utils/requests";
 import axios from 'axios';
 import { fetch } from '@tauri-apps/plugin-http';
@@ -104,7 +104,7 @@ const state = reactive({
 
 const workspaceList = ref([]);
 const getWorkspaceList = async () => {
-    const res = await zApi.workspace.getWorkspaceList();
+    const res = await jingApi.workspace.getWorkspaceList();
     workspaceList.value = res?.data?.list || [];
     state.workspaceTotal = res?.data?.total || 0;
 };
@@ -114,7 +114,7 @@ const workspaceData = reactive({
     description: '',
 })
 const getCurrentWorkspace = async () => {
-    const res = zApi.workspace.currentWorkspace;
+    const res = jingApi.workspace.currentWorkspace;
     state.currentWorkspace = res;
     console.log('current workspace:', res);
     if (res) {
@@ -125,25 +125,25 @@ const getCurrentWorkspace = async () => {
 }
 const createWorkspace = async () => {
     workspaceData.id = null;
-    const res = await zApi.workspace.createWorkspace(workspaceData);
+    const res = await jingApi.workspace.createWorkspace(workspaceData);
     console.log(res);
     getWorkspaceList();
 }
 const updateWorkspace = async () => {
-    const res = await zApi.workspace.updateWorkspace(workspaceData);
+    const res = await jingApi.workspace.updateWorkspace(workspaceData);
     console.log(res);
     getWorkspaceList();
 }
 const loadWorkspace = async (item) => {
-    const res = await zApi.workspace.switchWorkspace(item.id);
-    zApi.config.loadWorkspaceConfig();
+    const res = await jingApi.workspace.switchWorkspace(item.id);
+    jingApi.config.loadWorkspaceConfig();
     console.log(res);
     workspaceData.id = item.id;
     workspaceData.name = item.name;
     workspaceData.description = item.description;
 }
 const deleteWorkspace = async () => {
-    const res = await zApi.workspace.deleteWorkspace(workspaceData.id);
+    const res = await jingApi.workspace.deleteWorkspace(workspaceData.id);
     console.log(res);
     await getWorkspaceList();
     getCurrentWorkspace();
@@ -155,7 +155,7 @@ const cellData = reactive({
     description: '',
 })
 const addCell = async () => {
-    const res = await zApi.cells.addCell(cellData);
+    const res = await jingApi.cells.addCell(cellData);
     console.log(res);
     getCellList();
 }
@@ -171,17 +171,17 @@ const paramsGetCells = reactive({
     showDetail: 1,
 })
 const getCellList = async () => {
-    const res = await zApi.cells.getCells(paramsGetCells);
+    const res = await jingApi.cells.getCells(paramsGetCells);
     cellList.value = res?.data?.list || [];
     state.cellTotal = res?.data?.total || 0;
     console.log('get cells:', res);
 }
 const updateCell = async () => {
-    const res = await zApi.cells.updateCell(cellData);
+    const res = await jingApi.cells.updateCell(cellData);
     getCellList();
 }
 const deleteCell = async (cid) => {
-    const res = await zApi.cells.deleteCell({
+    const res = await jingApi.cells.deleteCell({
         cid: cid,
     });
     getCellList();
@@ -199,7 +199,7 @@ onMounted( async () => {
     // getCellList();
     getOllamaApiList();
 
-    if (zApi.env.isTauri) {
+    if (jingApi.env.isTauri) {
 
         state.fetchRes4 = await requests.post('http://localhost:6060/frontenddynamicms/elastic/config/get', {
             "codes": [

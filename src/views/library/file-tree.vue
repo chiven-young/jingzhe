@@ -19,7 +19,7 @@
 </template>
 <script lang="ts" setup>
 import { onMounted, onUnmounted, reactive, ref, watch } from 'vue';
-import zApi from '@/core';
+import jingApi from '@/core';
 import type Node from 'element-plus/es/components/tree/src/model/node'
 import type { DragEvents } from 'element-plus/es/components/tree/src/model/useDragNode'
 import type {
@@ -40,7 +40,7 @@ const getFilesTree = async (params) => {
             cid: '0',
             correlationsChildren: store.state.cellsTree,
         }, params.cid);
-        const res = await zApi.cells.getCell({
+        const res = await jingApi.cells.getCell({
             cid: params.cid,
             showCorrelationChildren: 1,
         })
@@ -168,7 +168,7 @@ const handleDrop = async (
         // if (itParent?.type !== 'folder') return // 必须文绑定到文件夹下面
         const meParentId = meParent?.cid === '0' ? null : meParent?.cid;
         const itParentId = itParent?.cid === '0' ? null : itParent?.cid;
-        zApi.cells.moveCell(draggingNode.data.cid, meParentId, itParentId);
+        jingApi.cells.moveCell(draggingNode.data.cid, meParentId, itParentId);
         await updateFolderChildrenSort(meParentId);
         await updateFolderChildrenSort(itParentId);
         // bus.emit('cells-changed', null);
@@ -182,7 +182,7 @@ const handleDrop = async (
         const parent = res?.parent;
         const meParentId = parent?.cid === '0' ? null : parent?.cid;
         const itParentId = dropNode.data.cid;
-        await zApi.cells.moveCell(draggingNode.data.cid, meParentId, itParentId);
+        await jingApi.cells.moveCell(draggingNode.data.cid, meParentId, itParentId);
         await updateFolderChildrenSort(meParentId);
         await updateFolderChildrenSort(itParentId);
         // bus.emit('cells-changed', null);
@@ -258,7 +258,7 @@ const handleMenuCommand = async (command) => {
             })
         }
     } else if (command === 'star') {
-        const res = await zApi.cells.connectCellAndUser({
+        const res = await jingApi.cells.connectCellAndUser({
             cid: contextMenuState.node?.cid,
             type: 'star'
         })
@@ -266,7 +266,7 @@ const handleMenuCommand = async (command) => {
             bus.emit('cells-changed', { cid: contextMenuState.node?.cid });
         }
     } else if (command === 'unStar') {
-        const res = await zApi.cells.disconnectCellAndUser({
+        const res = await jingApi.cells.disconnectCellAndUser({
             cid: contextMenuState.node?.cid,
             type: 'star'
         })
@@ -287,7 +287,7 @@ const handleMenuCommand = async (command) => {
             params.name = '新文件夹';
         }
         // 创建新细胞
-        const addRes = await zApi.cells.addCell(params);
+        const addRes = await jingApi.cells.addCell(params);
         const cid = addRes.data;
         router.push({
             path: '/edit',
@@ -296,12 +296,12 @@ const handleMenuCommand = async (command) => {
             }
         })
         // 将新细胞关联到此节点下
-        const relaRes = await zApi.cells.connectCells({
+        const relaRes = await jingApi.cells.connectCells({
             sourceId: contextMenuState.node?.cid,
             targetId: cid,
         })
         // 获取刚创建的新细胞，并push到此节点下
-        const newCellRes = await zApi.cells.getCell({
+        const newCellRes = await jingApi.cells.getCell({
             cid: cid,
         })
         const newCell = newCellRes.data;
@@ -319,7 +319,7 @@ const handleMenuCommand = async (command) => {
             bus.emit('cells-changed', { cid: cid, add: true });
         }, 100);
     } else if (command === 'delete') {
-        const res = await zApi.cells.deleteCell({
+        const res = await jingApi.cells.deleteCell({
             cid: contextMenuState.node?.cid
         });
         if (res.success) {
