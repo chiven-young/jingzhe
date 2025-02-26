@@ -200,13 +200,6 @@ onMounted( async () => {
     getOllamaApiList();
 
     if (zApi.env.isTauri) {
-        // state.fetchRes3 = await requests.get(`https://weibo.com/ajax/side/hotSearch`);
-
-        // state.fetchRes1 = await requests.get(`${import.meta.env.VITE_API_BASE_URL}/informationms/manager/mgrArticleInfo/getList?pageNo=1&pageSize=10`)
-        // console.log('test========', state.fetchRes1)
-
-        // state.fetchRes4 = await requests.get('http://localhost:6060/informationms/manager/mgrArticleInfo/getList?pageNo=1&pageSize=10')
-        // console.log('test========', state.fetchRes4)
 
         state.fetchRes4 = await requests.post('http://localhost:6060/frontenddynamicms/elastic/config/get', {
             "codes": [

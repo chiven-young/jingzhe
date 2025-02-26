@@ -41,9 +41,6 @@
 import { ref, onMounted, computed } from 'vue';
 import moment from 'moment';
 import marked from '@/utils/markdown';
-import { copyText } from '@/core/utils/tools';
-
-const baseStaticUrl = import.meta.env.VITE_STATIC_BASE_URL;
 
 const props = defineProps({
     data: Object, // 细胞数据
@@ -84,8 +81,7 @@ const handleCommand = (command) => {
     } else if (command === 'open') {
         emit('changeStatus', props.data?.cid, 4)
     } else if (command === 'copyOpenLink') {
-        let url = `${baseStaticUrl}/apps/jingzhe/#/post?cid=${props.data?.cid}`;
-        copyText(url);
+        
     } else if (command === 'remove') {
         emit('remove', props.data?.cid)
     }

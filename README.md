@@ -1,8 +1,6 @@
 # Jingzhe惊蛰
 
 - Markdown编辑器
-- 思维导图
-- 速记
 
 `npm run dev`
 `npm run build`

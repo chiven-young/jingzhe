@@ -46,15 +46,6 @@
       "allow": [
         {
           "url": "http://localhost:6060"
-        },
-        {
-          "url": "https://*.itaiping.com"
-        },
-        {
-          "url": "https://*.unsplash.com"
-        },
-        {
-          "url": "https://weibo.com"
         }
       ],
       "deny": []
