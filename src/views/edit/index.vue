@@ -4,7 +4,7 @@
             <div v-if="loadingGetData">
                 Loading...
             </div>
-            <Doc v-else-if="fileShowType === 'document'" v-model:data="itemData" @change="onItemUpdate" @continue="AIContinuedWriting" />
+            <Doc v-else-if="fileShowType === 'document'" v-model:data="itemData" @change="onItemUpdate" />
             <div v-else class="test">
                 <pre>
                     <code>{{ itemData }}</code>
@@ -30,7 +30,6 @@ import Panel from '@/editor/panel/index.vue';
 import Doc from '@/editor/document/index.vue';
 import { ElMessage } from 'element-plus';
 import { debounce } from '@/core/utils/tools';
-import AI from '@/AI';
 
 const router = useRouter();
 const route = useRoute();
@@ -137,22 +136,6 @@ const onItemUpdate = (val) => {
     } else {
         isFirstLoad = false;
     }
-}
-
-const inputPrompt = ref('写首诗');
-const generatedText = ref('');
-const AIContinuedWriting = async (context) => {
-    console.log('AI续写', context, store.state.currentAIModel)
-    // const prompt = inputPrompt.value;
-    // await AI.generateText({
-    //     model: store.state.currentAIModel,
-    //     prompt: prompt,
-    // }, (chunk) => {
-    //     generatedText.value += chunk;
-    //     // console.log('AI续写', generatedText.value);
-    //     itemData.value.data.text += chunk;
-    // });
-    // console.log('AI续写结果');
 }
 
 // 监听路由，每次修改路由都重新获取一次数据

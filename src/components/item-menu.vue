@@ -1,8 +1,8 @@
 <template>
     <div class="item-menus">
-        <div class="menu-item" @click="clickMenuItem('settings-account')">
-            <Icon class="icon" icon="AccountCircleOutlined" size="16" />
-            <span class="label">个人中心</span>
+        <div class="menu-item" @click="clickMenuItem('settings-workspace')">
+            <Icon class="icon" icon="SpaceDashboardOutlined" size="16" />
+            <span class="label">我的工作区</span>
             <span class="shortcut-keys"></span>
         </div>
         <div class="menu-item" @click="zApi.config.toggleTheme">
@@ -16,11 +16,11 @@
             </template>
             <span class="shortcut-keys"></span>
         </div>
-        <div class="menu-item" @click="clickMenuItem('settings-workspace')">
+        <!-- <div class="menu-item" @click="clickMenuItem('settings-workspace')">
             <Icon class="icon" icon="TuneRound" size="16" />
             <span class="label">偏好设置</span>
             <span class="shortcut-keys"></span>
-        </div>
+        </div> -->
         <div class="splitter"></div>
         <template v-if="route.path === '/edit'">
             <div class="menu-item" @click="clickMenuItem('settings-edit')">

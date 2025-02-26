@@ -15,20 +15,19 @@
                     <el-button size="small" round plain type="danger" @click="deleteWorkspace(item.id)">删除</el-button>
                 </div>
             </div>
-            <div class="card-item add" @click="zApi.workspace.importWorkspace">
+            <!-- <div class="card-item add" @click="zApi.workspace.importWorkspace">
                 <div class="content">
                     <Icon icon="ArrowCircleDownRound" size="24" />
                     <div class="label">导入工作区</div>
                 </div>
-            </div>
+            </div> -->
         </div>
-        <div class="edit">
-            <div class="title">{{ editMode === 'add' ? '新建工作区' : '编辑工作区' }}</div>
+        <div v-if="editMode" class="edit">
+            <div class="title">编辑工作区</div>
             <el-input v-model="workspaceData.name" placeholder="名称" />
             <el-input v-model="workspaceData.description" type="textarea" resize="none" placeholder="描述" />
             <div class="operation">
-                <el-button type="primary" @click="createWorkspace">新建工作区</el-button>
-                <el-button v-if="editMode === 'edit'" type="primary" @click="updateWorkspace">更新</el-button>
+                <el-button type="primary" @click="updateWorkspace">更新</el-button>
             </div>
         </div>
     </div>
@@ -47,29 +46,23 @@ const getWorkspaceList = async () => {
     workspaceList.value = res?.data?.list || [];
 };
 
-const editMode = ref('add');
+const editMode = ref(false);
 const workspaceData = reactive({
     id: null,
     name: '',
     description: '',
 })
 const toEdit = (item) => {
-    editMode.value = 'edit';
+    editMode.value = true;
     workspaceData.id = item.id;
     workspaceData.name = item.name;
     workspaceData.description = item.description;
 }
 const resetData = () => {
-    editMode.value = 'add';
+    editMode.value = false;
     workspaceData.id = null;
     workspaceData.name = '';
     workspaceData.description = '';
-}
-const createWorkspace = async () => {
-    workspaceData.id = null;
-    const res = await zApi.workspace.createWorkspace(workspaceData);
-    // console.log(res);
-    getWorkspaceList();
 }
 const updateWorkspace = async () => {
     const res = await zApi.workspace.updateWorkspace(workspaceData, false);

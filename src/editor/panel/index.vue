@@ -2,7 +2,7 @@
     <div class="panel-container no-select">
         <div class="tabs">
             <div v-for="(tab, index) in tabs" :key="index" class="tab"
-                :class="{ active: activeTab.value === tab.value }" @click="changeTab(tab)">
+                :class="{ active: activeTab?.value === tab?.value }" @click="changeTab(tab)">
                 <Icon class="icon" :icon="tab.icon" size="18" />
             </div>
         </div>
@@ -11,7 +11,6 @@
             <Style v-else-if="activeTab?.value === 'style'" :type="type" :data="data" scene="panel"></Style>
             <pageStyle v-else-if="activeTab?.value === 'pageStyle'" :type="type" :data="data" scene="panel"></pageStyle>
             <pageInfo v-else-if="activeTab?.value === 'info'" :type="type" :data="data" :workspace="store.state.workspace" scene="panel"></pageInfo>
-            <AI v-else-if="activeTab?.value === 'ai'" :type="type" :data="data" scene="panel" full></AI>
             <action v-else-if="activeTab?.value === 'action'" :type="type" scene="panel"></action>
         </div>
     </div>
@@ -23,7 +22,6 @@ import Style from './style.vue';
 import pageStyle from './page-style.vue';
 import pageInfo from './page-info.vue';
 import action from './actions.vue';
-import AI from './ai.vue';
 import store from '@/store';
 
 const props = defineProps({
@@ -54,11 +52,6 @@ const tabs = [
         label: 'info',
         value: 'info',
         icon: 'InfoOutlined'
-    },
-    {
-        label: 'ai',
-        value: 'ai',
-        icon: 'AssistantOutlined'
     },
     // {
     //     label: 'action',

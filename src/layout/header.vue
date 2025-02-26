@@ -19,14 +19,6 @@
                     <Icon class="icon" icon="ArrowForwardIosRound" size="16" />
                 </span>
             </div>
-            <el-select v-model="store.state.currentAIModel" size="small" placeholder="选择AI模型" @change="selectAIModel">
-                <el-option
-                    v-for="item in store.state.AIModels"
-                    :key="item.model"
-                    :label="item.name"
-                    :value="item.model"
-                />
-            </el-select>
             <!-- <span class="page-title"></span> -->
             <!-- <el-breadcrumb separator="/">
                 <el-breadcrumb-item :to="{ path: '/' }">我的文档</el-breadcrumb-item>
@@ -52,12 +44,11 @@
             </span>
             <el-popover placement="bottom" trigger="click" :width="200" popper-style="padding: 0">
                 <template #reference>
-                    <span class="btn square text">
-                        <!-- <Icon icon="MoreHorizRound" size="20" /> -->
-                        <div class="avatar" :style="{ backgroundImage: 'url(' + store.state.workspace?.user?.avatar + ')' }">
-                            <Icon v-if="!store.state.workspace?.user?.avatar" icon="AccountCircleFilled" size="18" />
+                    <div class="info btn square text">
+                        <div class="avatar" :style="{ backgroundImage: 'url(' + store.state.workspace?.avatar + ')' }">
+                            <span v-if="!store.state.workspace?.avatar">{{ store.state.workspace?.name?.charAt(0) }}</span>
                         </div>
-                    </span>
+                    </div>
                 </template>
                 <ItemMenu />
             </el-popover>
@@ -157,12 +148,6 @@ onMounted(async () => {
         .el-breadcrumb {
             margin-left: 8px;
         }
-        .el-select {
-            :deep(.el-select__wrapper) {
-                width: 140px;
-                background-color: transparent;
-            }
-        }
     }
 
     .right {
@@ -207,20 +192,24 @@ onMounted(async () => {
         line-height: 1;
     }
 }
-.avatar {
-    height: 18px;
-    width: 18px;
-    border-radius: 50%;
-    border: 1px solid var(--el-border-color);
-    background-color: var(--el-bg-color-overlay);
+.info {
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    font-weight: 400;
-    color: var(--text-color-2);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    .avatar {
+        height: 24px;
+        width: 24px;
+        border-radius: 50%;
+        border: 1px solid var(--border-color-1);
+        background-color: var(--bg-content-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-color-3);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
 }
 </style>

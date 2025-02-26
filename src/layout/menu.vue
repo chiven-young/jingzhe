@@ -1,6 +1,6 @@
 <template>
     <div class="menu no-select">
-        <WorkspaceBar />
+        <!-- <WorkspaceBar /> -->
         <div class="tabs">
             <div v-for="item in menuBarTabs" :key="item?.value" :title="item?.label"
                 :class="{ tab: true, active: activeTab?.value === item?.value }" @click="changeTab(item)">

@@ -1,21 +1,42 @@
 import zApi from '@/core';
-import bus from '@/core/utils/bus';
 import store from '@/store';
+
+function getTreeListFromCache () {
+    let list = JSON.parse(sessionStorage.getItem('fileTreeData') || '[]');
+    if (Array.isArray(list) && list.length) {
+        return list;
+    }
+    return [];
+}
 
 export default class Library {
 
     // 获取目录树
     static async getTree () {
-        let list = JSON.parse(sessionStorage.getItem('fileTreeData') || '[]');
-        if (list.length) {
-            store.state.cellsTree = list;
-            return list;
+        const list = getTreeListFromCache();
+        const tree = list.find(item => item.id === zApi.workspace?.currentWorkspace?.id);
+        if (tree && tree?.tree?.length) {
+            store.state.cellsTree = tree.tree;
+            return tree.tree;
         }
-        list = await this.getList('0');
-        list = sortByChildrenSort(list, zApi.workspace?.currentWorkspace?.data?.rootCells);
+        let arr = await this.getList('0');
+        arr = sortByChildrenSort(arr, zApi.workspace?.currentWorkspace?.data?.rootCells);
+        this.saveTreeToCache(arr);
+        store.state.cellsTree = arr;
+        return arr;
+    }
+    static saveTreeToCache (tree) {
+        let list = getTreeListFromCache();
+        const index = list.findIndex(item => item.id === zApi.workspace?.currentWorkspace?.id);
+        if (index !== -1) {
+            list[index].tree = tree;
+        } else {
+            list.push({
+                id: zApi.workspace?.currentWorkspace?.id,
+                tree: tree,
+            });
+        }
         sessionStorage.setItem('fileTreeData', JSON.stringify(list));
-        store.state.cellsTree = list;
-        return list;
     }
     // 获取细胞列表
     static async getList (parentId) {

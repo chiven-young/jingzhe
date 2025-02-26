@@ -27,8 +27,8 @@
                 <div class="content">
                     <div class="header">{{ activeMenu?.label }}</div>
                     <div class="content-wrapper">
-                        <Account v-if="activeMenu?.value === 'account'" />
-                        <Workspace v-else-if="activeMenu?.value === 'workspace'" @close="closeDialog" />
+                        <Workspace v-if="activeMenu?.value === 'workspace'" @close="closeDialog" />
+                        <AddWorkspace v-else-if="activeMenu?.value === 'addWorkspace'" @close="closeDialog" />
                         <Edit v-else-if="activeMenu?.value === 'edit'" />
                     </div>
                 </div>
@@ -41,14 +41,18 @@ import { ref, onMounted } from 'vue';
 import bus from '@/core/utils/bus';
 import store from '@/store';
 import zApi from '@/core';
-import Account from './components/account.vue';
 import Workspace from './components/workspace.vue';
+import AddWorkspace from './components/addWorkspace.vue';
 import Edit from './components/edit.vue';
 
 const showDialog = ref(false);
 const activeMenu = ref(null);
 const clickMenu = (item) => {
-    activeMenu.value = item;
+    if (item.value === 'importWorkspace') {
+        zApi.workspace.importWorkspace();
+    } else {
+        activeMenu.value = item;
+    }
 }
 
 const closeDialog = () => {
@@ -68,18 +72,23 @@ onMounted(()=> {
 })
 const settingsMenu = [
     {
-        label: '账号与工作区',
+        label: '工作区',
         children: [
             {
-                label: '我的账号',
-                value: 'account',
-                icon: 'AccountCircleOutlined'
-            },
-            {
-                label: '工作区',
+                label: '我的工作区',
                 value: 'workspace',
                 icon: 'SpaceDashboardOutlined'
-            }
+            },
+            {
+                label: '新建工作区',
+                value: 'addWorkspace',
+                icon: 'AddCircleOutlineRound'
+            },
+            {
+                label: '导入工作区',
+                value: 'importWorkspace',
+                icon: 'ArrowCircleDownRound'
+            },
         ]
     },
     {

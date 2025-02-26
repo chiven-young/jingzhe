@@ -252,6 +252,7 @@ export default class Workspace {
     }
     // 切换工作区
     static async switchWorkspace(id) {
+        store.state.loadingWorkspace = true;
         try {
             let workspace = await this.workspaceManagerDB.get(id);
             if (workspace) {
@@ -266,6 +267,7 @@ export default class Workspace {
                 store.state.workspace = workspace;
                 sessionStorage.setItem('activeWorkspaceId', id);
                 reorderLocalStorageArray('recentWorkspaces', id);
+                store.state.loadingWorkspace = false;
                 bus.emit('workspace-switched', workspace);
                 return {
                     code: '1000',
@@ -274,6 +276,7 @@ export default class Workspace {
                     message: '切换工作区成功'
                 };
             } else {
+                store.state.loadingWorkspace = false;
                 return {
                     code: '1005',
                     success: false,
@@ -282,6 +285,7 @@ export default class Workspace {
                 };
             }
         } catch (err) {
+            store.state.loadingWorkspace = false;
             const errorMessage = err.message ? err.message : String(err);
             console.log(errorMessage);
             return {

@@ -25,7 +25,7 @@
                     </div>
                     <!-- <div class="desc">{{ data?.description }}</div> -->
                     <div class="content">
-                    <div class="content-preview markdown-preview" v-html="descText"></div>
+                        <div class="content-preview markdown-preview" v-html="descText"></div>
                     </div>
                 </div>
                 <div class="extra-info">

@@ -8,7 +8,7 @@
                 <span class="time">{{ moment(cellData?.createTime).format('YYYY/MM/DD HH:mm') }}</span>
             </div>
         </div>
-        <Markdown ref="mdRef" class="markdown-editor" v-model:text="cellData.data.text" @change="onCellUpdate" @continue="continueWriting" />
+        <Markdown ref="mdRef" class="markdown-editor" v-model:text="cellData.data.text" @change="onCellUpdate" />
     </div>
 </template>
 <script setup>
@@ -22,10 +22,8 @@ const props = defineProps({
         default: () => ({}),
     }
 })
-const emit = defineEmits(['update:data', 'change', 'continue']);
-const continueWriting = (context) => {
-    emit('continue', context);
-}
+const emit = defineEmits(['update:data', 'change']);
+
 const mdRef = ref(null);
 
 const cellData = ref(props.data);
