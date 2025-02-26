@@ -30,6 +30,7 @@ export const formatWorkspace = (workspace) => {
 
     data.appearance = (workspace?.appearance && typeof workspace.appearance === 'object') ? workspace.appearance : {};
     data.appearance.theme = workspace?.appearance?.theme || 'system';
+    data.appearance.primaryColor = workspace?.appearance?.primaryColor || '#007aff';
 
     data.layout = (workspace?.layout && typeof workspace.layout === 'object') ? workspace.layout : {};
     data.layout.sidebar = (data.layout.sidebar && typeof data.layout.sidebar === 'object') ? data.layout.sidebar : {};

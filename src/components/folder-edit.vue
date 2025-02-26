@@ -9,7 +9,7 @@
         >
             <div class="wrapper">
                 <el-input v-model="paramsFolder.name" placeholder="请输入文件夹名称"></el-input>
-                <el-button type="primary" @click="submit">保存</el-button>
+                <el-button :disabled="!paramsFolder.name" type="primary" @click="submit">保存</el-button>
             </div>
         </el-dialog>
     </div>

@@ -7,7 +7,7 @@
             }">
                 <div class="name">{{ item?.name }}</div>
                 <div class="desc">{{ item?.description }}</div>
-                <div class="id">ID: {{ item?.id }}</div>
+                <!-- <div class="id">ID: {{ item?.id }}</div> -->
                 <div class="operation">
                     <el-button size="small" round :disabled="store.state.workspace?.id === item?.id" @click="loadWorkspace(item)">{{ store.state.workspace?.id === item?.id ? '使用中' : '使用' }}</el-button>
                     <el-button size="small" round @click="toEdit(item)">编辑</el-button>
@@ -101,7 +101,6 @@ onMounted( async ()=> {
             border-width: 1px;
             border-style: solid;
             border-radius: 8px;
-            min-height: 128px;
             box-sizing: border-box;
             .name {
                 font-size: 16px;

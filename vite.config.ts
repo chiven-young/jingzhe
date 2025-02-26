@@ -29,5 +29,7 @@ let options = {
 
 export default defineConfig(({ command, mode }) => {
   console.log(`========= mode ${mode} ========= 命令 ${command}=======`);
+  options.base = '/apps/jingzhe/';
+  options.build.outDir = 'jingzhe';
   return options;
 });

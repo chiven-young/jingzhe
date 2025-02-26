@@ -39,9 +39,9 @@
                 </template>
                 <Addbar @select="hiddenAddBar" />
             </el-popover>
-            <span v-if="route.path === '/edit'" class="btn square text" @click="zApi.config.toggleEditorPanel">
+            <!-- <span v-if="route.path === '/edit'" class="btn square text" @click="zApi.config.toggleEditorPanel">
                 <Icon icon="ChromeReaderModeOutlined" size="20" />
-            </span>
+            </span> -->
             <el-popover placement="bottom" trigger="click" :width="200" popper-style="padding: 0">
                 <template #reference>
                     <div class="info btn square text">

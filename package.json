@@ -6,11 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build --mode production",
-    "build:sit": "vite build --mode sit",
     "preview": "vite preview",
     "tauri": "tauri",
-    "build:tauri-sit": "vite build --mode sit && npm run tauri build -- --bundles app",
-    "build:tauri-pro": "vite build --mode production && npm run tauri build -- --bundles app"
+    "build:tauri": "vite build --mode production && npm run tauri build -- --bundles app"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.0.3",

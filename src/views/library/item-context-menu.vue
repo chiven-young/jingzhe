@@ -4,50 +4,52 @@
         <div class="menu-item name disabled">
             <span class="label">{{ state?.node?.name }}</span>
         </div>
-        <div class="menu-item separator">
-            <span class="line"></span>
-        </div>
-        <div class="menu-item" @click="handleMenuCommand('edit')">
-            <Icon icon="ModeEditOutlineOutlined" size="14" />
-            <span class="label">编辑</span>
-        </div>
-        <div class="menu-item" v-if="!state?.node?.isStar" @click="handleMenuCommand('star')">
-            <Icon icon="StarRound" size="16" />
-            <span class="label">收藏</span>
-        </div>
-        <div class="menu-item" v-else @click="handleMenuCommand('unStar')">
-            <Icon icon="StarOutlineRound" size="16" />
-            <span class="label">取消收藏</span>
-        </div>
-        <div class="menu-item separator">
-            <span class="line"></span>
-        </div>
-        <div v-if="state?.node?.type !== 'folder'" class="menu-item" @click="handleMenuCommand('clone')">
-            <Icon icon="ContentCopyRound" size="14" />
-            <span class="label">创建副本</span>
-        </div>
-        <div v-if="sence === 'library'" class="menu-item" :class="{ 'disabled': clipBoard?.cid === state?.node?.cid }" @click="handleMenuCommand('cut')">
-            <Icon icon="ContentCutOutlined" size="14" />
-            <span class="label">剪切</span>
-        </div>
-        <template v-if="state?.node?.type === 'folder' && sence === 'tree'">
-            <div class="menu-item" @click="handleMenuCommand('document')">
-                <Icon icon="DescriptionOutlined" size="14" />
-                <span class="label">新建文档</span>
+        <template v-if="state?.node?.status > 0">
+            <div class="menu-item separator">
+                <span class="line"></span>
             </div>
-            <!-- <div class="menu-item" @click="handleMenuCommand('mindmap')">
-                <Icon icon="MindMapOutlined" size="14" />
-                <span class="label">新建思维导图</span>
+            <div class="menu-item" @click="handleMenuCommand('edit')">
+                <Icon icon="ModeEditOutlineOutlined" size="14" />
+                <span class="label">编辑</span>
+            </div>
+            <div class="menu-item" v-if="!state?.node?.isStar" @click="handleMenuCommand('star')">
+                <Icon icon="StarRound" size="16" />
+                <span class="label">收藏</span>
+            </div>
+            <div class="menu-item" v-else @click="handleMenuCommand('unStar')">
+                <Icon icon="StarOutlineRound" size="16" />
+                <span class="label">取消收藏</span>
+            </div>
+            <div class="menu-item separator">
+                <span class="line"></span>
+            </div>
+            <!-- <div v-if="state?.node?.type !== 'folder'" class="menu-item" @click="handleMenuCommand('clone')">
+                <Icon icon="ContentCopyRound" size="14" />
+                <span class="label">创建副本</span>
             </div> -->
-            <div class="menu-item" @click="handleMenuCommand('folder')">
-                <Icon icon="FolderOutlined" size="14" />
-                <span class="label">新建文件夹</span>
+            <div v-if="sence === 'library'" class="menu-item" :class="{ 'disabled': clipBoard?.cid === state?.node?.cid }" @click="handleMenuCommand('cut')">
+                <Icon icon="ContentCutOutlined" size="14" />
+                <span class="label">剪切</span>
+            </div>
+            <template v-if="state?.node?.type === 'folder' && sence === 'tree'">
+                <div class="menu-item" @click="handleMenuCommand('document')">
+                    <Icon icon="DescriptionOutlined" size="14" />
+                    <span class="label">新建文档</span>
+                </div>
+                <!-- <div class="menu-item" @click="handleMenuCommand('mindmap')">
+                    <Icon icon="MindMapOutlined" size="14" />
+                    <span class="label">新建思维导图</span>
+                </div> -->
+                <div class="menu-item" @click="handleMenuCommand('folder')">
+                    <Icon icon="FolderOutlined" size="14" />
+                    <span class="label">新建文件夹</span>
+                </div>
+            </template>
+            <div class="menu-item separator">
+                <span class="line"></span>
             </div>
         </template>
-        <div class="menu-item separator">
-            <span class="line"></span>
-        </div>
-        <template v-if="state.node.status === 0">
+        <template v-if="state?.node?.status === 0">
             <div class="menu-item" @click="handleMenuCommand('restore')">
                 <Icon icon="RestoreRound" size="14" />
                 <span class="label">恢复</span>

@@ -21,14 +21,14 @@
                 <div class="desc">开始在新文件上书写</div>
             </div>
         </div>
-        <div class="add-item" @click="addNew('mindmap')">
+        <!-- <div class="add-item" @click="addNew('mindmap')">
             <Icon class="icon" icon="DescriptionOutlined" size="24" />
             <div>
                 <div class="label">新建脑图</div>
                 <div class="desc">构建你的想法</div>
             </div>
-        </div>
-        <div class="add-item add-template" @click="bus.emit('showTemplateModal')">
+        </div> -->
+        <!-- <div class="add-item add-template" @click="bus.emit('showTemplateModal')">
             <div>
                 <div class="label">模板</div>
                 <div class="desc">浏览并选择模板</div>
@@ -37,7 +37,7 @@
                 <img class="img-1" :src="ImgTemplate1" alt="">
                 <img class="img-2" :src="ImgTemplate2" alt="">
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 <script setup>

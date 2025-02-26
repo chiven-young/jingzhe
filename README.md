@@ -1,6 +1,6 @@
 # Jingzhe惊蛰
 
-- Markdown编辑器
+美观、安全的Markdown编辑器
 
 `npm run dev`
 `npm run build`

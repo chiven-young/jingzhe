@@ -71,6 +71,13 @@ export default class Config {
             this.setTheme('dark');
         }
     }
+    static async setPrimaryColor(color) {
+        if (color !== Workspace.currentWorkspace.appearance.primaryColor) {
+            Workspace.currentWorkspace.appearance.primaryColor = color;
+            const res = await Workspace.updateWorkspace(Workspace.currentWorkspace);
+            document.documentElement.style.setProperty('--el-color-primary', color);
+        }
+    }
 
     // =========== 配置 ============
 
@@ -121,6 +128,9 @@ export default class Config {
         } else {
             document.documentElement.classList.remove('dark');
             document.documentElement.classList.add('light');
+        }
+        if (Workspace.currentWorkspace?.appearance?.primaryColor) {
+            document.documentElement.style.setProperty('--el-color-primary', Workspace.currentWorkspace.appearance.primaryColor);
         }
     }
 }

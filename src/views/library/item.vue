@@ -62,30 +62,6 @@ const showContextMenu = (event) => {
     emit('showContextMenu', event, props.data);
 }
 
-const handleCommand = (command) => {
-    if (command === 'edit') {
-        emit('action', props.data, 'edit');
-    } else if (command === 'star') {
-        emit('toggleStar', props.data?.cid);
-        if (props.isStar) {
-            emit('update:isStar', false)
-        } else {
-            emit('update:isStar', true)
-        }
-    } else if (command === 'delete') {
-        emit('changeStatus', props.data?.cid, 0)
-    } else if (command === 'restore') {
-        emit('changeStatus', props.data?.cid, 2)
-    } else if (command === 'template') {
-        emit('saveAsTemplate', props.data)
-    } else if (command === 'open') {
-        emit('changeStatus', props.data?.cid, 4)
-    } else if (command === 'copyOpenLink') {
-        
-    } else if (command === 'remove') {
-        emit('remove', props.data?.cid)
-    }
-}
 const goToPage = (cell)=> {
     if(cell.status === 0) return
     if (cell.type === 'folder') {
@@ -130,6 +106,9 @@ onMounted( async () => {
 <style lang="scss" scoped>
 .cell-item {
     position: relative;
+    .folder-head {
+        display: none;
+    }
 
     .wrapper {
         overflow: hidden;
@@ -276,12 +255,21 @@ onMounted( async () => {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        background-color: transparent;
+        padding: 0 0 12px 0;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-radius: 0;
         .info {
             display: grid;
             grid-template-columns: 100px 1fr;
             grid-template-rows: 24px 1fr;
             gap: 10px;
             width: 100%;
+            .preview-cover {
+                width: 100px;
+            }
             .cover {
                 grid-row: 1 / 3;
                 grid-column: 1 / 2;
@@ -297,10 +285,14 @@ onMounted( async () => {
             .base {
                 grid-row: 1 / 2;
                 grid-column: 2 / 3;
+                .content {
+                    border-top: none;
+                }
             }
             .extra-info {
                 grid-row: 2 / 3;
                 grid-column: 2 / 3;
+                background-color: transparent;
             }
         }
     }
@@ -313,8 +305,9 @@ onMounted( async () => {
 .cell-item.is-cut {
     opacity: 0.5;
 }
-.cell-item.folder {
+.cell-item.grid.folder {
     .folder-head {
+        display: block;
         position: absolute;
         top: 0;
         left: 0;

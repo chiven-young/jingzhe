@@ -21,7 +21,7 @@
                         </div>
                     </div>
                     <div class="footer">
-                        <el-button v-if="store.state.workspace?.user?.uid" @click="zApi.user.logout">退出登录</el-button>
+                        
                     </div>
                 </div>
                 <div class="content">
@@ -30,6 +30,8 @@
                         <Workspace v-if="activeMenu?.value === 'workspace'" @close="closeDialog" />
                         <AddWorkspace v-else-if="activeMenu?.value === 'addWorkspace'" @close="closeDialog" />
                         <Edit v-else-if="activeMenu?.value === 'edit'" />
+                        <Appearance v-else-if="activeMenu?.value === 'appearance'" />
+                        <About v-else-if="activeMenu?.value === 'about'" />
                     </div>
                 </div>
             </div>
@@ -39,11 +41,12 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import bus from '@/core/utils/bus';
-import store from '@/store';
 import zApi from '@/core';
 import Workspace from './components/workspace.vue';
 import AddWorkspace from './components/addWorkspace.vue';
 import Edit from './components/edit.vue';
+import Appearance from './components/appearance.vue';
+import About from './components/about.vue';
 
 const showDialog = ref(false);
 const activeMenu = ref(null);
@@ -104,16 +107,11 @@ const settingsMenu = [
                 value: 'appearance',
                 icon: 'HiveOutlined'
             },
-            {
-                label: '语言',
-                value: 'language',
-                icon: 'LanguageRound'
-            },
-            {
-                label: '高级设置',
-                value: 'advance',
-                icon: 'DisplaySettingsRound'
-            },
+            // {
+            //     label: '语言',
+            //     value: 'language',
+            //     icon: 'LanguageRound'
+            // },
             {
                 label: '关于',
                 value: 'about',
@@ -230,6 +228,47 @@ const settingsMenu = [
             overflow-y: scroll;
             padding: 16px;
             box-sizing: border-box;
+        }
+    }
+    :deep(.settings-content) {
+        .section {
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-color-3);
+
+            .section-title {
+                font-size: 14px;
+                color: var(--text-color-2);
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+            }
+
+            .section-content {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                margin-top: 8px;
+
+                .item-title {
+                    font-size: 13px;
+                    color: var(--text-color-3);
+                }
+            }
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .active {
+            outline: 2px solid var(--el-color-primary);
+            outline-offset: 3px;
+        }
+
+        .text-desc {
+            font-size: 12px;
+            color: var(--text-color-3);
+            margin: 4px 0;
         }
     }
 }

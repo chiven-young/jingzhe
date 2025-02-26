@@ -1,13 +1,13 @@
 <template>
     <div class="library-body no-select" @contextmenu.prevent="showMoreContextMenu">
-        <div v-if="paramsCells.groupName === 'CONTENT' && libraryParams?.page !== 'deleted'" class="tabs">
+        <!-- <div v-if="paramsCells.groupName === 'CONTENT' && libraryParams?.page !== 'deleted'" class="tabs">
             <div :class="{ tab: true, active: !paramsCells.type }" @click="changeType('')">
                 <span class="label">全部</span>
             </div>
             <div v-for="item in fileTypeOptions" :key="item?.value" :class="{ tab: true, active: paramsCells.type === item?.value }" v-show="item?.enable" @click="changeType(item.value)">
                 <span class="label">{{ item?.label }}</span>
             </div>
-        </div>
+        </div> -->
         <div class="filter"></div>
         <div v-if="cellsList.length" class="item-list" :class="[ showType ]">
             <Item v-for="(item, index) in cellsList" :key="index" class="item" :data="item" :showType="showType" v-model:isStar="item.isStar" :isCut="store.state.clipBoard?.cid === item?.cid" @toggleStar="toggleStar" @changeStatus="changeCellStatus" @remove="removeCell" @saveAsTemplate="saveAsTemplate" @connect="onConnectCells" @action="onCellAction" @showContextMenu="showContextMenu" />
@@ -70,7 +70,7 @@ const pageData = reactive({
     loadingCells: false,
     cellsTotal: 0,
     jumperPage: 1,
-    skeletonCount: 20,
+    skeletonCount: 40,
 })
 
 const cellsList = ref([]);
@@ -510,7 +510,7 @@ onUnmounted(() => {
     }
     .item-list.grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
         // grid-auto-rows: 224px;
         grid-auto-rows: min-content;
         grid-column-gap: 16px;
@@ -518,7 +518,7 @@ onUnmounted(() => {
         .item {
             // height: 224px;
             height: 100%;
-            min-height: 200px;
+            min-height: 160px;
         }
     }
     .item-list.list {
@@ -539,7 +539,7 @@ onUnmounted(() => {
 
         .item {
             background-color: var(--bg-content-color);
-            min-height: 140px;
+            min-height: 160px;
         }
 
         .empty {

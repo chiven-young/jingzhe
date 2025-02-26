@@ -1,17 +1,17 @@
 <template>
     <div class="menu no-select">
         <!-- <WorkspaceBar /> -->
-        <div class="tabs">
+        <!-- <div class="tabs">
             <div v-for="item in menuBarTabs" :key="item?.value" :title="item?.label"
                 :class="{ tab: true, active: activeTab?.value === item?.value }" @click="changeTab(item)">
                 <Icon :icon="item?.icon" size="16" />
             </div>
-        </div>
+        </div> -->
         <div class="items">
             <div v-show="activeTab?.value === 'item'" class="menu-content menu-list">
                 <div :class="['item', { active: activeMenuItem === '/' }]"
                     @click="changeMenuItem('/')">
-                    <Icon v-if="activeMenuItem === '/library/index'" icon="AssistantPhotoFilled" size="16" />
+                    <Icon v-if="activeMenuItem === '/'" icon="AssistantPhotoFilled" size="16" />
                     <Icon v-else icon="AssistantPhotoOutlined" size="16" />
                     <div class="name">
                         <span>开始</span>
@@ -25,15 +25,15 @@
                         <span>收藏</span>
                     </div>
                 </div>
-                <div :class="['item', { active: activeMenuItem === '/library/material' }]"
+                <!-- <div :class="['item', { active: activeMenuItem === '/library/material' }]"
                     @click="changeMenuItem('/library/material')">
                     <Icon v-if="activeMenuItem === '/library/material'" icon="InboxFilled" size="16" />
                     <Icon v-else icon="InboxOutlined" size="16" />
                     <div class="name">
                         <span>素材库</span>
                     </div>
-                </div>
-                <div :class="['item', { active: activeMenuItem === '/library/tags' }]" @click="changeMenuItem('/library/tags')">
+                </div> -->
+                <!-- <div :class="['item', { active: activeMenuItem === '/library/tags' }]" @click="changeMenuItem('/library/tags')">
                     <Icon v-if="activeMenuItem === '/library/tags'" icon="DiscountRound" size="16" />
                     <Icon v-else icon="DiscountOutlined" size="16" />
                     <div class="name">
@@ -43,15 +43,15 @@
                             <Icon icon="ArrowDropDownRound" size="16" @click="state.showTagsTree = !state.showTagsTree" />
                         </div>
                     </div>
-                </div>
-                <div :class="['item', { active: activeMenuItem === '/library/template' }]"
+                </div> -->
+                <!-- <div :class="['item', { active: activeMenuItem === '/library/template' }]"
                     @click="changeMenuItem('/library/template')">
                     <Icon v-if="activeMenuItem === '/library/template'" icon="SubtitlesFilled" size="16" />
                     <Icon v-else icon="SubtitlesOutlined" size="16" />
                     <div class="name">
                         <span>我的模板</span>
                     </div>
-                </div>
+                </div> -->
                 <!-- <div :class="['item', { active: activeMenuItem === '/test' }]" @click="changeMenuItem('/test')">
                     <Icon v-if="activeMenuItem === '/dev/0'" icon="AdminPanelSettingsRound" size="16" />
                     <Icon v-else icon="AdminPanelSettingsOutlined" size="16" />
@@ -88,13 +88,13 @@
                         <span>废纸篓</span>
                     </div>
                 </div>
-                <div :class="{ item: true, active: activeMenuItem === '/dev/0' }" @click="changeMenuItem('/dev/0')">
+                <!-- <div :class="{ item: true, active: activeMenuItem === '/dev/0' }" @click="changeMenuItem('/dev/0')">
                     <Icon v-if="activeMenuItem === '/dev/0'" icon="AdminPanelSettingsRound" size="16" />
                     <Icon v-else icon="AdminPanelSettingsOutlined" size="16" />
                     <div class="name">
                         <span>开发者模式</span>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

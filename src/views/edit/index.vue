@@ -14,8 +14,8 @@
         <div class="panel">
             <Panel :type="fileShowType" :data="itemData" />
         </div>
-        <OperationsBar v-if="store.state.workspace?.editor?.panel?.collapse" class="bar operations-bar"
-            :type="fileShowType" :data="itemData" />
+        <!-- <OperationsBar v-if="store.state.workspace?.editor?.panel?.collapse" class="bar operations-bar"
+            :type="fileShowType" :data="itemData" /> -->
     </div>
 </template>
 <script setup>
@@ -25,7 +25,7 @@ import zApi from '@/core';
 import store from '@/store';
 import { cellDataFormat } from '@/core/utils/format';
 import { useRouter, useRoute } from 'vue-router';
-import OperationsBar from '@/editor/bar/operations.vue';
+// import OperationsBar from '@/editor/bar/operations.vue';
 import Panel from '@/editor/panel/index.vue';
 import Doc from '@/editor/document/index.vue';
 import { ElMessage } from 'element-plus';
