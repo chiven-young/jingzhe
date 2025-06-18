@@ -8,7 +8,7 @@ let options = {
     outDir: 'dist',
   },
   server: {
-    port: 3004,
+    port: 4001,
   },
   resolve: {
     alias: {

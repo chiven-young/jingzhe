@@ -6,7 +6,7 @@
         </template>
         <div class="menu-item" @click="handleMenuCommand('folder')">新建文件夹</div>
         <div class="menu-item" @click="handleMenuCommand('document')">新建图文</div>
-        <div class="menu-item" @click="handleMenuCommand('paste')">粘贴</div>
+        <div v-if="clipBoard" class="menu-item" @click="handleMenuCommand('paste')">粘贴</div>
     </div>
 </template>
 <script setup>

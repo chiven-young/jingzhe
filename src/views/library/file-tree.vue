@@ -60,7 +60,7 @@ const getFilesTree = async (params) => {
             treeRef.value.setCurrentKey(cid, true);
         }, 100);
     }
-    // console.log('filesTree', store.state.cellsTree)
+    console.log('filesTree', store.state.cellsTree)
 }
 
 const route = useRoute();

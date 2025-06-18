@@ -412,6 +412,15 @@ const handleMoreMenuCommand = async (command) => {
                 type: 'error'
             })
         }
+    } else if (command === 'folder') {
+        bus.emit('showFolderModal', null);
+    } else if (command === 'document') {
+        router.push({
+            path: '/edit',
+            query: {
+                type: 'document'
+            }
+        })
     }
 }
 
